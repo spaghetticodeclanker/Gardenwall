@@ -185,7 +185,15 @@ fn changes_by_programs_left_running_are_caught_before_the_next_command() {
     let a = f.shell.aftermath().expect("a program is left");
     assert!(a.changes.is_empty(), "{:?}", a.changes);
     f.shell.settle_programs(true);
-    std::thread::sleep(Duration::from_secs(6));
+    // The program waits 3 s, then writes. Windows PowerShell can take
+    // several seconds to start in a sandbox on a busy machine (CI), so
+    // wait for the file rather than a fixed time.
+    let deadline = std::time::Instant::now() + Duration::from_secs(30);
+    while !f.work.join(".vscode/tasks.json").exists() && std::time::Instant::now() < deadline {
+        std::thread::sleep(Duration::from_millis(250));
+    }
+    // Let the write finish before the check reads the folder.
+    std::thread::sleep(Duration::from_millis(500));
     assert!(
         f.work.join(".vscode/tasks.json").exists(),
         "the program ran"
