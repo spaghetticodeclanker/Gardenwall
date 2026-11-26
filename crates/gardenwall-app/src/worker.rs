@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 use std::time::Duration;
 
 /// One sandboxed run.
+#[cfg_attr(not(windows), allow(dead_code))]
 pub struct WorkerSpec<'a> {
     /// AppContainer profile name.
     pub profile: &'a str,

@@ -377,6 +377,7 @@ pub fn warm_in_background(app: &tauri::AppHandle) {
 }
 
 /// The environment for a toolchain's commands, with scratch folders made.
+#[cfg_attr(not(windows), allow(dead_code))]
 pub fn env_for(t: &Found, scratch: &Path) -> Vec<(OsString, OsString)> {
     t.env
         .iter()

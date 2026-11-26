@@ -385,6 +385,7 @@ impl Generation {
 }
 
 #[derive(Clone)]
+#[cfg_attr(not(windows), allow(dead_code))]
 pub struct Paths {
     pub root: PathBuf,
     pub models: PathBuf,

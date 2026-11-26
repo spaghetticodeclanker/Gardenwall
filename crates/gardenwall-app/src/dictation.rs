@@ -33,6 +33,7 @@ type CmdResult<T> = Result<T, String>;
 /// The Hugging Face repository the speech models come from, pinned.
 #[cfg_attr(not(windows), allow(dead_code))]
 const MODEL_REPO: &str = "ggerganov/whisper.cpp";
+#[cfg_attr(not(windows), allow(dead_code))]
 const MODEL_COMMIT: &str = "5359861c739e955e79d9a303bcbc70fb988958b1";
 /// Longest recording kept (the rest is dropped).
 #[cfg_attr(not(windows), allow(dead_code))]
@@ -48,6 +49,7 @@ const WHISPER_RATE: u32 = 16_000;
 
 /// A pinned speech model.
 #[derive(Debug, Clone, Copy)]
+#[cfg_attr(not(windows), allow(dead_code))]
 pub struct SpeechModel {
     pub name: &'static str,
     pub file: &'static str,

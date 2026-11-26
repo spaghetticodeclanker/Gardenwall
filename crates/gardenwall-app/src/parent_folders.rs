@@ -197,6 +197,7 @@ pub fn hold_for(state: &AppState, folders: &[PathBuf]) {
 }
 
 #[cfg(not(windows))]
+#[cfg_attr(not(windows), allow(dead_code))]
 pub fn hold_for(_state: &AppState, _folders: &[PathBuf]) {}
 
 /// Every project's folders, checked loosely (paths only).
