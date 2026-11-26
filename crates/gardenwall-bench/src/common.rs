@@ -422,7 +422,7 @@ pub fn fingerprint() -> Fingerprint {
                 f.os = format!("Windows {}", v.trim());
             }
         }
-        f.pwsh = gardenwall_agent::sandbox_shell::find_powershell7().and_then(|p| {
+        f.pwsh = find_powershell7().and_then(|p| {
             command_output(
                 &p.to_string_lossy(),
                 &[
@@ -664,6 +664,17 @@ pub fn shuffle<T>(items: &mut [T], seed: u64) {
         x ^= x << 17;
         items.swap(i, (x % (i as u64 + 1)) as usize);
     }
+}
+
+/// PowerShell 7, where the agent's sandboxed shell exists.
+#[cfg(any(windows, target_os = "linux"))]
+fn find_powershell7() -> Option<std::path::PathBuf> {
+    gardenwall_agent::sandbox_shell::find_powershell7()
+}
+
+#[cfg(not(any(windows, target_os = "linux")))]
+fn find_powershell7() -> Option<std::path::PathBuf> {
+    None
 }
 
 #[cfg(test)]

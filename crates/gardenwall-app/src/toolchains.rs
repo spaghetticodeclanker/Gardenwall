@@ -237,10 +237,7 @@ pub fn present_otherwise(settings: &crate::state::Settings, id: &str) -> bool {
         })
     };
     match id {
-        "python" => {
-            (settings.agent.python && gardenwall_agent::python::find_python().is_some())
-                || has("python.exe")
-        }
+        "python" => (settings.agent.python && find_python().is_some()) || has("python.exe"),
         "node" => has("node.exe"),
         _ => false,
     }
@@ -957,6 +954,18 @@ fn best(mut candidates: Vec<(String, PathBuf, u8)>) -> Option<(String, PathBuf)>
 
 // ---- Python -----------------------------------------------------------------
 
+/// The all-users Python the agent's sandbox can read (none where the agent
+/// has no sandboxed shell, as on macOS).
+#[cfg(any(windows, target_os = "linux"))]
+fn find_python() -> Option<PathBuf> {
+    gardenwall_agent::python::find_python()
+}
+
+#[cfg(not(any(windows, target_os = "linux")))]
+fn find_python() -> Option<PathBuf> {
+    None
+}
+
 /// Pythons on this PC: python.org's all-users install (Program Files, as
 /// before: every sandbox can read it), its per-user install
 /// (`%LOCALAPPDATA%\Programs\Python\Python3NN`, the installer's default) and
@@ -964,7 +973,7 @@ fn best(mut candidates: Vec<(String, PathBuf, u8)>) -> Option<(String, PathBuf)>
 /// build never starts in an AppContainer and is never used.
 fn python_candidates() -> Vec<(String, PathBuf, u8)> {
     let mut out = Vec::new();
-    if let Some(exe) = gardenwall_agent::python::find_python()
+    if let Some(exe) = find_python()
         && let Some(dir) = exe.parent()
     {
         out.push((python_version(dir), dir.to_path_buf(), 0));

@@ -16,7 +16,18 @@ use gardenwall_agent::agent::{
     Agent, AgentEvent, ApprovalResult, Approver, BoxFuture, Model, Shell, TurnEnd,
 };
 use gardenwall_agent::prompt::{ContextFile, Skill};
+#[cfg(any(windows, target_os = "linux"))]
 use gardenwall_agent::sandbox_shell::ShellKind;
+
+/// Where Gardenwall has no sandboxed shell (macOS), profiles still name one.
+#[cfg(not(any(windows, target_os = "linux")))]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum ShellKind {
+    #[default]
+    PowerShell,
+    WindowsPowerShell,
+    Cmd,
+}
 use gardenwall_inference::client::{ChatRequest, ChatResponse, InferenceClient, StreamEvent};
 use gardenwall_policy::tools::{Approval, SessionPolicy};
 use serde::{Deserialize, Serialize};

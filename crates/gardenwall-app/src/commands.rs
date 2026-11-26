@@ -781,6 +781,7 @@ pub(crate) async fn download_resolved(
             .iter()
             .find(|f| f.path == path)
             .ok_or("file not found or not verifiable")?;
+        #[cfg_attr(not(windows), allow(unused_mut))]
         let mut leftovers = gardenwall_models::hub::partial_paths(
             std::slice::from_ref(file),
             state.library.dir(),

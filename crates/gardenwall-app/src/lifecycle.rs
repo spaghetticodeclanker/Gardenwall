@@ -174,23 +174,53 @@ pub fn on_close_requested(window: &tauri::Window, api: &tauri::CloseRequestApi) 
             "Closing Gardenwall now ends:\n\n• {}\n\nEverything else is saved.",
             work.join("\n• ")
         );
-        let choice = rfd::MessageDialog::new()
-            .set_level(rfd::MessageLevel::Warning)
-            .set_title("Close Gardenwall?")
-            .set_description(description)
-            .set_buttons(rfd::MessageButtons::OkCancelCustom(
-                END.into(),
-                "Cancel".into(),
-            ))
-            .show();
+        let end_and_close = confirm_close(&app, description, END);
         PROMPT_OPEN.store(false, Ordering::SeqCst);
-        if choice == rfd::MessageDialogResult::Custom(END.into()) {
+        if end_and_close {
             app.state::<AppState>()
                 .closing
                 .store(true, Ordering::SeqCst);
             app.exit(0);
         }
     });
+}
+
+/// Ask whether to end what runs and close; true for "End and close".
+/// Windows uses rfd directly, as before.
+#[cfg(windows)]
+fn confirm_close(_app: &AppHandle, description: String, end: &str) -> bool {
+    let choice = rfd::MessageDialog::new()
+        .set_level(rfd::MessageLevel::Warning)
+        .set_title("Close Gardenwall?")
+        .set_description(description)
+        .set_buttons(rfd::MessageButtons::OkCancelCustom(
+            end.into(),
+            "Cancel".into(),
+        ))
+        .show();
+    choice == rfd::MessageDialogResult::Custom(end.into())
+}
+
+/// Other systems: the same prompt through the dialog plugin (rfd is a
+/// Windows-only dependency here).
+#[cfg(not(windows))]
+fn confirm_close(app: &AppHandle, description: String, end: &str) -> bool {
+    confirm_close_with_plugin(app, description, end)
+}
+
+/// Compiled on Windows too, so it is type-checked where the app is built.
+#[cfg_attr(windows, allow(dead_code))]
+fn confirm_close_with_plugin(app: &AppHandle, description: String, end: &str) -> bool {
+    use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
+    app.dialog()
+        .message(description)
+        .title("Close Gardenwall?")
+        .kind(MessageDialogKind::Warning)
+        .buttons(MessageDialogButtons::OkCancelCustom(
+            end.into(),
+            "Cancel".into(),
+        ))
+        .blocking_show()
 }
 
 /// The app is exiting (the window is already gone): end every session,

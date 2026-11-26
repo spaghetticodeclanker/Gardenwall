@@ -18,6 +18,14 @@ fn git_home() -> Option<PathBuf> {
 
 #[tokio::test]
 async fn git_works_in_the_sandbox_once_the_repository_exists() {
+    // GitHub's hosted Windows runners run tests in a service session without
+    // a console: Git there opens /dev/null to fill its missing standard
+    // handles, which the sandbox can't open, so the test can't show anything
+    // about Gardenwall. It runs on developer machines.
+    if std::env::var_os("GITHUB_ACTIONS").is_some() {
+        eprintln!("skipped: hosted CI runner (no console session)");
+        return;
+    }
     let Some(git) = git_home() else {
         eprintln!("skipped: Git for Windows is not installed in Program Files");
         return;
