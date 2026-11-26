@@ -735,7 +735,15 @@ fn permissions(path: &std::path::Path) -> String {
         .output()
         .unwrap();
     let text = String::from_utf8_lossy(&out.stdout).replace(&path.display().to_string(), "");
-    text.lines().map(str::trim).collect::<Vec<_>>().join("\n")
+    // Without the "inherited" mark: a folder whose permissions are in the
+    // old, pre-auto-inheritance form (GitHub's runners) gives its files
+    // copies without the mark; once any change is made to the folder,
+    // Windows rewrites them in the current form, marked inherited, with the
+    // same entries and rights.
+    text.lines()
+        .map(|l| l.trim().replace("(I)", ""))
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
 /// Secret-pattern files in a granted folder (ADR-011 §2.4) are hidden from
@@ -1006,11 +1014,30 @@ fn runner_diagnostics() {
         "try { [Console]::Out.WriteLine('assembly ' + [Reflection.Assembly]::Load('Microsoft.PowerShell.Commands.Utility, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35').Location) } catch { [Console]::Out.WriteLine('assembly load: ' + $_.Exception.ToString()) }",
         "try { Import-Module Microsoft.PowerShell.Utility -ErrorAction Stop; [Console]::Out.WriteLine('import ok') } catch { [Console]::Out.WriteLine('import: ' + $_.Exception.ToString()) }",
         "try { Import-Module \"$env:windir\\System32\\WindowsPowerShell\\v1.0\\Modules\\Microsoft.PowerShell.Utility\\Microsoft.PowerShell.Utility.psd1\" -ErrorAction Stop; [Console]::Out.WriteLine('import by path ok') } catch { [Console]::Out.WriteLine('import by path: ' + $_.Exception.ToString()) }",
-        "foreach ($m in Get-Module -ListAvailable) { [Console]::Out.WriteLine('available ' + $m.Name + ' ' + $m.Path) }",
+        "try { [Console]::Out.WriteLine('program files modules: ' + ([IO.Directory]::GetDirectories(\"$env:ProgramFiles\\WindowsPowerShell\\Modules\") -join ', ')) } catch { [Console]::Out.WriteLine('program files modules: ' + $_.Exception.Message) }",
+        "[Console]::Out.WriteLine('ProgramFiles ' + $env:ProgramFiles + ' autoload ' + $PSModuleAutoloadingPreference + ' LOCALAPPDATA ' + $env:LOCALAPPDATA)",
+        "try { $c = Get-Command Write-Output -ErrorAction Stop; [Console]::Out.WriteLine('get-command ok ' + $c.Source) } catch { [Console]::Out.WriteLine('get-command: ' + $_.Exception.ToString()) }",
+        "try { Write-Output 'autoload ok' } catch { [Console]::Out.WriteLine('autoload: ' + $_.Exception.ToString()) }",
+        "$env:PSModulePath = \"$env:windir\\System32\\WindowsPowerShell\\v1.0\\Modules\"; try { Write-Output 'autoload with System32 only ok' } catch { [Console]::Out.WriteLine('autoload with System32 only: ' + $_.Exception.Message) }",
+        "try { $p = \"$env:LOCALAPPDATA\\Microsoft\\Windows\\PowerShell\"; [Console]::Out.WriteLine('cache folder ' + [IO.Directory]::Exists($p) + ' ' + (([IO.Directory]::GetFiles($p, '*', 'AllDirectories')) -join ', ')) } catch { [Console]::Out.WriteLine('cache folder: ' + $_.Exception.Message) }",
+        "foreach ($e in $Error) { [Console]::Out.WriteLine('error record: ' + $e.Exception.ToString()) }",
     ] {
         println!("> {c}\n{}", run(&ps, c));
     }
     drop(ps);
+
+    section("cmd started from PowerShell 7 in the sandbox (is it chcp?)");
+    let ps7 = shell_with_tools(tmp.path(), &tools, ShellKind::PowerShell);
+    for c in [
+        "cmd /d /c echo no-chcp; \"exit $LASTEXITCODE\"",
+        "cmd /d /c \"chcp 65001>nul 2>&1 & echo with-chcp\"; \"exit $LASTEXITCODE\"",
+        "cmd /d /c \"chcp & echo plain-chcp\"",
+        "cmd /d /c \"chcp 65001 & echo loud-chcp\"",
+        "cmd /d /c \"chcp 437>nul 2>&1 & echo chcp-437\"",
+    ] {
+        println!("> {c}\n{}", run(&ps7, c));
+    }
+    drop(ps7);
 
     section("cmd in the sandbox");
     let cmd = shell_with_tools(tmp.path(), &tools, ShellKind::Cmd);

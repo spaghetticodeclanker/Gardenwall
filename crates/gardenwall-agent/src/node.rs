@@ -15,7 +15,8 @@
 //! folders still resolve (pnpm-style layouts, for example), and the ES
 //! module resolver, which keeps its own copy of `realpathSync`, is covered
 //! too because both reach the same binding. The callback form `fs.realpath`
-//! (Node's other JavaScript walk) uses the native call first.
+//! (Node's other JavaScript walk) uses the native call first and, if
+//! that is refused as well, the answered synchronous walk.
 //!
 //! It grants nothing: it runs inside the same sandbox as the command. A
 //! folder above the granted ones that really is a link is taken as a plain
@@ -64,9 +65,19 @@ function realpath(p, options, callback) {
     callback = options;
     options = undefined;
   }
-  nativeAsync(p, encodingOf(options), (err, resolved) =>
-    err ? jsAsync.call(fs, p, options, callback) : callback(null, resolved),
-  );
+  nativeAsync(p, encodingOf(options), (err, resolved) => {
+    if (!err) return callback(null, resolved);
+    // The native call can be refused too (seen on Windows Server); the
+    // synchronous walk, answered above, then resolves the path. Node's own
+    // asynchronous walk would stop at the drive root.
+    let out;
+    try {
+      out = fs.realpathSync(p, options);
+    } catch (e) {
+      return callback(e);
+    }
+    callback(null, out);
+  });
 }
 realpath.native = nativeAsync;
 fs.realpath = realpath;
