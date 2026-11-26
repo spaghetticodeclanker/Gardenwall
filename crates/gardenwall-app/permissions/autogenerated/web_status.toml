@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-web-status"
+description = "Enables the web_status command without any pre-configured scope."
+commands.allow = ["web_status"]
+
+[[permission]]
+identifier = "deny-web-status"
+description = "Denies the web_status command without any pre-configured scope."
+commands.deny = ["web_status"]

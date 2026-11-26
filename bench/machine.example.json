@@ -1,0 +1,9 @@
+{
+  "server": "C:/Users/<you>/AppData/Local/ai.gardenwall.desktop/runtime/runtimes/b12556-windows-x64-cuda13/llama-server.exe",
+  "mainModel": "C:/Users/<you>/AppData/Local/ai.gardenwall.desktop/models/<sha256>.gguf",
+  "smallModel": null,
+  "moeModel": "C:/Users/<you>/AppData/Local/ai.gardenwall.desktop/models/<sha256>/<name>-00001-of-00002.gguf",
+  "mainMmproj": "C:/Users/<you>/AppData/Local/ai.gardenwall.desktop/models/<mmproj sha256>.gguf",
+  "embedModel": null,
+  "pi": "node <repository>/bench/pi-wrapper.mjs {url} {model} 32768 {prompt}"
+}

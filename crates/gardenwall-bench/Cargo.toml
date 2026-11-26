@@ -1,0 +1,26 @@
+[package]
+name = "gardenwall-bench"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Gardenwall's benchmark harness: the performance baseline suites and the agent parity benchmark (ADR-014 section 2.3). A development tool, never part of the app."
+publish = false
+
+[dependencies]
+gardenwall-agent = { path = "../gardenwall-agent" }
+gardenwall-inference = { path = "../gardenwall-inference" }
+gardenwall-policy = { path = "../gardenwall-policy" }
+gardenwall-gpu = { path = "../gardenwall-gpu" }
+gardenwall-rag = { path = "../gardenwall-rag" }
+gardenwall-sandbox = { path = "../gardenwall-sandbox" }
+gardenwall-store = { path = "../gardenwall-store" }
+zeroize = "1.9.1"
+getrandom = "0.4.3"
+regex = "1.13.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+tokio = { version = "1.54.1", features = ["rt-multi-thread", "macros", "process", "time"] }
+
+[dev-dependencies]
+tempfile = "3.27.0"

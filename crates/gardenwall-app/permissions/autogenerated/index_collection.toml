@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-index-collection"
+description = "Enables the index_collection command without any pre-configured scope."
+commands.allow = ["index_collection"]
+
+[[permission]]
+identifier = "deny-index-collection"
+description = "Denies the index_collection command without any pre-configured scope."
+commands.deny = ["index_collection"]

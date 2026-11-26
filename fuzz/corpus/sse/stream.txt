@@ -1,0 +1,7 @@
+data: {"choices":[{"delta":{"content":"hi"}}]}
+
+: keep-alive
+data: {"choices":[{"delta":{"tool_calls":[{"index":0,"function":{"name":"read","arguments":"{}"}}]}}]}
+
+data: [DONE]
+

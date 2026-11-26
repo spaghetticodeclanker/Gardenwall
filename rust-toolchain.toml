@@ -1,0 +1,6 @@
+# The compiler this repository is built and linted with. Keep it the same
+# as RUST_TOOLCHAIN in .github/workflows/ci.yml and rust-version in
+# Cargo.toml: clippy's lints change between versions.
+[toolchain]
+channel = "1.98"
+components = ["rustfmt", "clippy"]

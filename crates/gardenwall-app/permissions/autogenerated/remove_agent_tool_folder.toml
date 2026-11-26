@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-remove-agent-tool-folder"
+description = "Enables the remove_agent_tool_folder command without any pre-configured scope."
+commands.allow = ["remove_agent_tool_folder"]
+
+[[permission]]
+identifier = "deny-remove-agent-tool-folder"
+description = "Denies the remove_agent_tool_folder command without any pre-configured scope."
+commands.deny = ["remove_agent_tool_folder"]

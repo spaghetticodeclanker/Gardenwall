@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-research-card"
+description = "Enables the agent_research_card command without any pre-configured scope."
+commands.allow = ["agent_research_card"]
+
+[[permission]]
+identifier = "deny-agent-research-card"
+description = "Denies the agent_research_card command without any pre-configured scope."
+commands.deny = ["agent_research_card"]

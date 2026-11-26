@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Gardenwall",
+  "version": "0.1.0",
+  "identifier": "ai.gardenwall.desktop",
+  "build": {
+    "beforeDevCommand": { "script": "npm run dev", "cwd": "../../ui" },
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": { "script": "npm run build", "cwd": "../../ui" },
+    "frontendDist": "../../ui/dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Gardenwall",
+        "width": 1240,
+        "height": 820,
+        "minWidth": 960,
+        "minHeight": 620,
+        "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --disable-background-networking --disable-component-update --disable-domain-reliability --disable-sync --no-pings"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src blob:; font-src 'self'; connect-src ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'",
+      "freezePrototype": true
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhBNENGREM2NDNFOTc0MzEKUldReGRPbER4djFNaXRHOEtIMno4ZzRlNjVlRkZ5aFhvSDdBMlkvdmZaRm04eWhYUTJEdzErU1MK",
+      "windows": { "installMode": "passive" }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

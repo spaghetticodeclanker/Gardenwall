@@ -1,0 +1,50 @@
+name: Bug report
+description: Something in Gardenwall doesn't work as it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        **Found a security problem?** Please don't open an issue. Report it privately as described in [SECURITY.md](https://github.com/spaghetticodeclanker/gardenwall/blob/main/SECURITY.md).
+
+        Before you paste anything, check it holds nothing private: no passwords, keys, file contents or chat text you don't want to share.
+  - type: input
+    id: version
+    attributes:
+      label: Gardenwall version
+      description: Shown on the Updates page.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to make it happen
+      description: The smallest set of steps that shows the problem.
+      placeholder: |
+        1. Open …
+        2. Click …
+        3. See …
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics report
+      description: |
+        In Gardenwall, choose Copy diagnostics (Ctrl+K, "Diagnostics") and paste the report here. Gardenwall shows you the whole report first; paths, addresses, your name and anything that looks like a secret are already removed. Read it before pasting.
+      render: text
+  - type: textarea
+    id: more
+    attributes:
+      label: Anything else
+      description: Screenshots (check them for private details first), the model you used, or anything that seems related.

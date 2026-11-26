@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-rename-mcp-server"
+description = "Enables the rename_mcp_server command without any pre-configured scope."
+commands.allow = ["rename_mcp_server"]
+
+[[permission]]
+identifier = "deny-rename-mcp-server"
+description = "Denies the rename_mcp_server command without any pre-configured scope."
+commands.deny = ["rename_mcp_server"]

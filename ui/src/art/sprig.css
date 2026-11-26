@@ -1,0 +1,14 @@
+.gw-sprig { display: inline-block; flex: none; vertical-align: -3px; }
+.gw-sprig-stem { fill: none; stroke: var(--accent); stroke-linecap: round; opacity: 0.55; vector-effect: non-scaling-stroke; }
+.gw-sprig-bud { fill: var(--accent); opacity: 0.22; animation: gw-sprig-bud 1.5s ease-in-out infinite; }
+.gw-sprig-bud:nth-of-type(2) { animation-delay: 0.25s; }
+.gw-sprig-bud:nth-of-type(3) { animation-delay: 0.5s; }
+@keyframes gw-sprig-bud { 0%, 100% { opacity: 0.22; } 30% { opacity: 1; } 60% { opacity: 0.22; } }
+@media (prefers-reduced-motion: reduce) { .gw-sprig-bud { animation: none; opacity: 1; } }
+/* A line of text that starts with the sprig. */
+.gw-working { display: inline-flex; align-items: center; gap: 7px; }
+.gw-agent-working { padding: 6px 0; }
+/* "Working…" fades in and out with the buds (one 1.5 s cycle). */
+.gw-working-text { animation: gw-working-text 1.5s ease-in-out infinite; }
+@keyframes gw-working-text { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .gw-working-text { animation: none; } }

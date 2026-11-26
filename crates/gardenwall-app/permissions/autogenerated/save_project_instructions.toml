@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-save-project-instructions"
+description = "Enables the save_project_instructions command without any pre-configured scope."
+commands.allow = ["save_project_instructions"]
+
+[[permission]]
+identifier = "deny-save-project-instructions"
+description = "Denies the save_project_instructions command without any pre-configured scope."
+commands.deny = ["save_project_instructions"]

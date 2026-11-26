@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-pick-memory-folder"
+description = "Enables the pick_memory_folder command without any pre-configured scope."
+commands.allow = ["pick_memory_folder"]
+
+[[permission]]
+identifier = "deny-pick-memory-folder"
+description = "Denies the pick_memory_folder command without any pre-configured scope."
+commands.deny = ["pick_memory_folder"]

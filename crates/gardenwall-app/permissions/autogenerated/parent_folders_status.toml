@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-parent-folders-status"
+description = "Enables the parent_folders_status command without any pre-configured scope."
+commands.allow = ["parent_folders_status"]
+
+[[permission]]
+identifier = "deny-parent-folders-status"
+description = "Denies the parent_folders_status command without any pre-configured scope."
+commands.deny = ["parent_folders_status"]

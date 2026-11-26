@@ -1,0 +1,227 @@
+/* Shared building blocks (Phase 0). Tokens only: every value comes from
+   styles.css :root. Class prefix gw- keeps them apart from the old styles
+   while pages move over. */
+
+.gw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- buttons ---- */
+.gw-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  border: 1px solid transparent; border-radius: var(--radius); font: inherit; font-weight: 500;
+  cursor: pointer; white-space: nowrap; line-height: 1.2;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.gw-btn-md { height: 32px; padding: 0 var(--sp-3); font-size: var(--fs-base); }
+.gw-btn-sm { height: 26px; padding: 0 10px; font-size: var(--fs-sm); border-radius: var(--radius-sm); }
+.gw-btn:active:not(:disabled) { transform: scale(0.97); }
+.gw-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.gw-btn-primary { background: var(--accent); color: var(--accent-text); }
+.gw-btn-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 88%, white); }
+.gw-btn-secondary { background: var(--panel); color: var(--text); border-color: var(--border-strong); }
+.gw-btn-secondary:hover:not(:disabled) { background: var(--raised); border-color: var(--muted); }
+.gw-btn-ghost { background: transparent; color: var(--text-secondary); }
+.gw-btn-ghost:hover:not(:disabled) { background: var(--hover); color: var(--text); }
+.gw-btn-danger { background: transparent; color: var(--danger); border-color: color-mix(in srgb, var(--danger) 45%, transparent); }
+.gw-btn-danger:hover:not(:disabled) { background: var(--danger-soft); }
+
+.gw-icon-btn {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0;
+  border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.gw-icon-btn:hover:not(:disabled) { background: var(--hover); color: var(--text); }
+.gw-icon-btn:active:not(:disabled) { transform: scale(0.92); }
+.gw-copy.done { color: var(--accent); }
+.gw-copy svg { transition: transform var(--dur-base) var(--ease-out); }
+.gw-copy.done svg { transform: scale(1.1); }
+
+.gw-btn:focus-visible, .gw-icon-btn:focus-visible, .gw-toggle:focus-visible, .gw-tab:focus-visible,
+.gw-menu-item:focus-visible, .gw-disclosure summary:focus-visible, .gw-toast-action:focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 2px;
+}
+
+/* ---- toggle ---- */
+.gw-toggle {
+  position: relative; width: 34px; height: 20px; padding: 0; flex: none;
+  border: 1px solid var(--border-strong); border-radius: 999px; background: var(--chrome); cursor: pointer;
+  transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.gw-toggle-knob {
+  position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--muted); transition: transform var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);
+}
+.gw-toggle.on { background: var(--accent); border-color: var(--accent); }
+.gw-toggle.on .gw-toggle-knob { transform: translateX(14px); background: var(--accent-text); }
+.gw-toggle:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ---- setting groups and rows ---- */
+.gw-group { margin: 0 0 var(--sp-6); }
+.gw-group-title { font-size: var(--fs-sm); font-weight: 600; color: var(--muted); margin: 0 0 var(--sp-2) var(--sp-1); }
+.gw-group-body { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-card); }
+.gw-row {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-2) var(--sp-4);
+  min-height: 48px; padding: var(--sp-3) var(--sp-4);
+}
+.gw-row + .gw-row { border-top: 1px solid var(--border); }
+.gw-row-text { min-width: 0; flex: 1 1 260px; }
+.gw-row-label { color: var(--text); line-height: 1.35; }
+.gw-row-help { color: var(--muted); font-size: var(--fs-sm); line-height: 1.45; margin-top: 2px; }
+.gw-row-control { flex: none; display: flex; align-items: center; gap: var(--sp-2); }
+.gw-disclosure { margin: calc(var(--sp-2) * -1) 0 var(--sp-6); }
+.gw-disclosure summary { cursor: pointer; color: var(--link); padding: var(--sp-2) var(--sp-1); width: max-content; border-radius: var(--radius-sm); }
+.gw-disclosure-body { margin-top: var(--sp-2); }
+
+/* ---- pills ---- */
+.gw-pill { display: inline-flex; align-items: center; gap: var(--sp-1); height: 20px; padding: 0 var(--sp-2); border-radius: var(--radius-sm); font-size: var(--fs-xs); font-weight: 500; white-space: nowrap; border: 1px solid; }
+.gw-pill-ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+.gw-pill-accent { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: var(--accent-soft); }
+.gw-pill-warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, transparent); }
+.gw-pill-danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, transparent); }
+.gw-pill-neutral { color: var(--muted); border-color: var(--border-strong); }
+
+/* ---- table ---- */
+.gw-table-frame { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--panel); container-type: inline-size; }
+/* Optional columns go first when the table is narrow (beside the side panel). */
+@container (max-width: 620px) {
+  .gw-table .gw-col-optional { display: none; }
+  /* The first column (names) wraps instead of keeping its wide minimum. */
+  .gw-table td:first-child, .gw-table th:first-child { min-width: 11em !important; }
+  .gw-table col { min-width: 0 !important; width: auto !important; }
+}
+.gw-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.gw-table th {
+  font-size: var(--fs-sm); font-weight: 500; color: var(--muted); text-align: left; white-space: nowrap;
+  padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--border); background: var(--chrome);
+}
+.gw-table td { padding: 10px var(--sp-3); border-bottom: 1px solid var(--border); vertical-align: middle; overflow-wrap: break-word; }
+/* Figures, statuses and actions keep to one line; the name column wraps and the table scrolls sideways if it must. */
+.gw-table td:not(:first-child), .gw-table th { white-space: nowrap; }
+.gw-table td:first-child { min-width: 14em; }
+.gw-table tbody tr:last-child td { border-bottom: 0; }
+.gw-table tr.selectable { cursor: pointer; }
+.gw-table tr.selectable:hover td { background: var(--hover); }
+.gw-table tr.selected td { background: var(--accent-soft); }
+
+/* ---- segmented bar ---- */
+.gw-seg { display: flex; flex-direction: column; gap: var(--sp-2); }
+.gw-seg-track { position: relative; display: flex; gap: 1px; background: var(--border); border-radius: 999px; overflow: visible; }
+.gw-seg-part { height: 100%; transition: width var(--dur-panel) var(--ease-out); }
+.gw-seg-part:first-child { border-radius: 999px 0 0 999px; }
+.gw-seg-part.hatched, .gw-seg-legend i.hatched {
+  background: repeating-linear-gradient(45deg, var(--chrome) 0 3px, var(--border-strong) 3px 4px);
+}
+.gw-seg-marker { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--warn); border-radius: 1px; }
+.gw-seg-legend { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-4); font-size: var(--fs-sm); color: var(--muted); font-variant-numeric: tabular-nums; }
+.gw-seg-legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
+.gw-seg-legend b { color: var(--text-secondary); font-weight: 500; }
+.gw-seg-legend-marker { color: var(--warn); }
+
+/* ---- empty and error states ---- */
+.gw-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--sp-2); padding: var(--sp-8) var(--sp-4); }
+.gw-empty-art { margin-bottom: var(--sp-2); filter: blur(0.4px); opacity: 0.9; }
+.gw-empty-title { font-size: var(--fs-md); font-weight: 600; color: var(--text); }
+.gw-empty-body { margin: 0 0 var(--sp-2); max-width: 44ch; color: var(--muted); line-height: 1.5; }
+.gw-error { background: var(--danger-soft); border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent); border-radius: var(--radius-card); padding: var(--sp-3) var(--sp-4); }
+.gw-error-title { display: flex; align-items: center; gap: var(--sp-2); color: var(--danger); font-weight: 600; }
+.gw-error-cause { margin: var(--sp-1) 0 0; color: var(--text-secondary); line-height: 1.5; }
+.gw-error-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--sp-3); margin-top: var(--sp-3); }
+.gw-error-details summary { cursor: pointer; color: var(--link); line-height: 32px; }
+.gw-error-details pre { font-family: var(--font-mono); font-size: var(--fs-sm); white-space: pre-wrap; color: var(--muted); max-height: 200px; overflow: auto; margin: var(--sp-2) 0 0; }
+
+/* ---- menu ---- */
+.gw-menu-anchor { position: relative; display: inline-flex; }
+.gw-menu {
+  position: absolute; top: calc(100% + 6px); z-index: 60; min-width: 240px; width: max-content; max-width: min(400px, calc(100vw - 32px)); padding: var(--sp-1);
+  background: var(--raised); border: 1px solid var(--border-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-pop);
+  animation: gw-pop var(--dur-base) var(--ease-out);
+}
+.gw-menu-end { right: 0; transform-origin: top right; }
+.gw-menu-start { left: 0; transform-origin: top left; }
+/* Not enough room below (the last row of a list): open upward. */
+.gw-menu.gw-menu-up { top: auto; bottom: calc(100% + 6px); }
+.gw-menu-up.gw-menu-end { transform-origin: bottom right; }
+.gw-menu-up.gw-menu-start { transform-origin: bottom left; }
+/* Never taller than the window. */
+.gw-menu { max-height: calc(100vh - 32px); overflow-y: auto; }
+@keyframes gw-pop { from { opacity: 0; transform: scale(0.97) translateY(-2px); } }
+.gw-menu-item {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 34px; padding: var(--sp-1) var(--sp-2);
+  border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--text); text-align: left; cursor: pointer; font: inherit;
+}
+.gw-menu-item svg { color: var(--muted); flex: none; }
+.gw-menu-item:hover, .gw-menu-item:focus-visible { background: var(--hover); }
+.gw-menu-item.danger, .gw-menu-item.danger svg { color: var(--danger); }
+.gw-menu-label { flex: 1; white-space: nowrap; }
+.gw-menu-hint { color: var(--muted); font-size: var(--fs-sm); font-variant-numeric: tabular-nums; white-space: nowrap; margin-left: var(--sp-4); }
+.gw-menu-item:disabled { cursor: default; color: var(--disabled); }
+.gw-menu-item:disabled:hover { background: transparent; }
+.gw-menu-sep { height: 1px; margin: var(--sp-1) var(--sp-2); background: var(--border); }
+
+/* ---- inspector ---- */
+.gw-inspector {
+  position: relative; width: 440px; max-width: 100%; flex: none; display: flex; flex-direction: column; min-height: 0;
+  background: var(--chrome); border-left: 1px solid var(--border); container: inspector / inline-size;
+}
+/* The left edge: drag (or arrow keys) to resize, double-click for the default width. */
+.gw-inspector-grip { position: absolute; left: -4px; top: 0; bottom: 0; width: 8px; cursor: col-resize; z-index: 5; touch-action: none; }
+.gw-inspector-grip::after { content: ""; position: absolute; left: 3px; top: 0; bottom: 0; width: 2px; background: transparent; transition: background var(--dur-fast) var(--ease-out); }
+.gw-inspector-grip:hover::after, .gw-inspector-grip:active::after, .gw-inspector-grip:focus-visible::after { background: var(--accent); }
+.gw-inspector-grip:focus-visible { outline: none; }
+.gw-inspector-head { display: flex; align-items: flex-start; gap: var(--sp-1); padding: var(--sp-2) var(--sp-2) 0 var(--sp-3); border-bottom: 1px solid var(--border); }
+.gw-inspector-head > .gw-icon-btn { margin-top: 2px; }
+/* Tabs wrap onto a second row rather than being cut off. */
+.gw-tabs { display: flex; flex-wrap: wrap; gap: 2px; flex: 1; min-width: 0; padding: 2px 2px 0; }
+.gw-tab {
+  display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 8px; flex: none;
+  border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: var(--fs-sm);
+}
+.gw-tab:hover { color: var(--text); }
+.gw-tab:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.gw-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+.gw-tab-badge { font-size: var(--fs-xs); color: var(--text-secondary); background: var(--panel); border-radius: var(--radius-sm); padding: 0 5px; font-variant-numeric: tabular-nums; }
+.gw-inspector-body { flex: 1; overflow-y: auto; overflow-x: hidden; padding: var(--sp-4) var(--sp-5); min-width: 0; overflow-wrap: break-word; }
+.gw-inspector-body .explain-body, .gw-inspector-body .pros-cons { max-width: 100%; }
+
+/* ---- toasts ---- */
+.gw-toasts { position: fixed; right: calc(var(--sp-4) + var(--gw-right-panel, 0px)); /* beside an open right-hand panel */ bottom: max(84px, var(--gw-corner-floor, 0px)); /* above a message box on screen */ z-index: 120; display: flex; flex-direction: column; gap: var(--sp-2); align-items: flex-end; pointer-events: none; }
+.gw-toast {
+  pointer-events: auto; display: flex; align-items: center; gap: var(--sp-3); max-width: 420px;
+  padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4); background: var(--raised); color: var(--text);
+  border: 1px solid var(--border-strong); border-left: 3px solid var(--muted); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-pop); animation: gw-rise var(--dur-panel) var(--ease-out);
+}
+@keyframes gw-rise { from { opacity: 0; transform: translateY(8px); } }
+.gw-toast-ok { border-left-color: var(--ok); }
+.gw-toast-warn { border-left-color: var(--warn); }
+.gw-toast-danger { border-left-color: var(--danger); }
+.gw-toast-text { flex: 1; line-height: 1.4; }
+.gw-toast-action { border: 0; background: transparent; color: var(--link); font: inherit; font-weight: 500; cursor: pointer; padding: var(--sp-1) var(--sp-2); border-radius: var(--radius-sm); }
+.gw-toast-action:hover { background: var(--hover); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-menu, .gw-toast { animation: none; }
+}
+
+/* A setting whose control sits under its text (long text fields). */
+.gw-row.gw-row-stack { display: block; }
+.gw-row-stack textarea { width: 100%; margin-top: var(--sp-2); resize: vertical; }
+/* Settings: one category per page. */
+.gw-settings .settings-group[hidden] { display: none; }
+/* One category per page: no divider under it (left from the one-long-page layout). */
+.gw-settings .settings-group { border-bottom: 0; }
+.gw-settings-path { display: inline-block; max-width: min(64ch, 100%); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr; vertical-align: middle; }
+.gw-row-control:has(.gw-settings-path) { flex: 0 1 auto; min-width: 0; max-width: 100%; }
+.gw-inline-explain { display: inline; }
+.gw-inline-explain[open] { display: block; margin-top: var(--sp-1); }
+.gw-nowrap { white-space: nowrap; }
+.gw-cell-wrap { white-space: normal; overflow-wrap: anywhere; }
+.gw-download { display: inline-flex; align-items: center; gap: var(--sp-2, 8px); flex-wrap: wrap; }
+.gw-download .progress { flex: 0 1 auto; max-width: 100%; }
+.gw-download .progress span { white-space: nowrap; }
+/* Right-click menus are placed at the pointer. */
+.gw-context-menu { z-index: 200; transform-origin: top left; }
+.gw-rename-field { width: 100%; margin: 2px 0; padding: 5px 8px; border: 1px solid var(--focus); border-radius: var(--radius-sm); background: var(--panel); color: var(--text); font: inherit; }
+/* A text field with its buttons, inside a stacked setting row. */
+.gw-inline-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-2); }
+.gw-inline-controls input { flex: 1 1 240px; min-width: 0; max-width: 420px; }
+.gw-row-stack details { margin-top: var(--sp-2); }

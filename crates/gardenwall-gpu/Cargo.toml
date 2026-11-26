@@ -1,0 +1,23 @@
+[package]
+name = "gardenwall-gpu"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Read-only GPU memory status for Gardenwall: DXGI adapter budget and per-process GPU memory (Windows)"
+publish = false
+
+# DXGI is COM, which windows-sys does not cover; the `windows` crate is
+# already in the dependency tree through Tauri and WebView2.
+[target.'cfg(windows)'.dependencies.windows]
+version = "0.62.2"
+features = ["Win32_Foundation", "Win32_Graphics_Dxgi"]
+
+[target.'cfg(windows)'.dependencies.windows-sys]
+version = "0.61"
+features = [
+  "Win32_Foundation",
+  "Win32_System_Performance",
+  "Win32_System_Diagnostics_ToolHelp",
+  "Win32_System_SystemInformation",
+]

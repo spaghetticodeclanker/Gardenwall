@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-complete-path"
+description = "Enables the agent_complete_path command without any pre-configured scope."
+commands.allow = ["agent_complete_path"]
+
+[[permission]]
+identifier = "deny-agent-complete-path"
+description = "Denies the agent_complete_path command without any pre-configured scope."
+commands.deny = ["agent_complete_path"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-research-repositories"
+description = "Enables the research_repositories command without any pre-configured scope."
+commands.allow = ["research_repositories"]
+
+[[permission]]
+identifier = "deny-research-repositories"
+description = "Denies the research_repositories command without any pre-configured scope."
+commands.deny = ["research_repositories"]

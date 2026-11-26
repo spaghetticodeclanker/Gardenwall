@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-install-dismiss"
+description = "Enables the agent_install_dismiss command without any pre-configured scope."
+commands.allow = ["agent_install_dismiss"]
+
+[[permission]]
+identifier = "deny-agent-install-dismiss"
+description = "Denies the agent_install_dismiss command without any pre-configured scope."
+commands.deny = ["agent_install_dismiss"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-project-readiness"
+description = "Enables the project_readiness command without any pre-configured scope."
+commands.allow = ["project_readiness"]
+
+[[permission]]
+identifier = "deny-project-readiness"
+description = "Denies the project_readiness command without any pre-configured scope."
+commands.deny = ["project_readiness"]

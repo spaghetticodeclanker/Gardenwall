@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-20",
+  "note": "Checked against the live hub on 2026-11-20: filter=gguf with pipeline_tag returns only that kind; each sort below is accepted; an unknown sort is refused with HTTP 400; downloads counts the last 30 days (downloadsAllTime is separate). Many quantizers' repositories carry no kind at all, so they appear in search but not in this ranking.",
+  "kinds": [
+    { "tag": "text-generation", "label": "Chat and coding" },
+    { "tag": "image-text-to-text", "label": "Vision" }
+  ],
+  "sorts": [
+    { "key": "trendingScore", "label": "Trending" },
+    { "key": "downloads", "label": "Most downloaded (last 30 days)" },
+    { "key": "createdAt", "label": "Newest" }
+  ],
+  "fallbackSort": "downloads",
+  "limit": 50,
+  "cacheMinutes": 15,
+  "newDays": 30,
+  "fewDownloads": 1000
+}

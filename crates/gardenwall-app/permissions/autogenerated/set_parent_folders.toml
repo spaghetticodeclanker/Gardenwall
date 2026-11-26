@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-set-parent-folders"
+description = "Enables the set_parent_folders command without any pre-configured scope."
+commands.allow = ["set_parent_folders"]
+
+[[permission]]
+identifier = "deny-set-parent-folders"
+description = "Denies the set_parent_folders command without any pre-configured scope."
+commands.deny = ["set_parent_folders"]

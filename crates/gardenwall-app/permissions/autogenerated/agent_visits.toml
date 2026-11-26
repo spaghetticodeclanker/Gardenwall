@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-visits"
+description = "Enables the agent_visits command without any pre-configured scope."
+commands.allow = ["agent_visits"]
+
+[[permission]]
+identifier = "deny-agent-visits"
+description = "Denies the agent_visits command without any pre-configured scope."
+commands.deny = ["agent_visits"]

@@ -1,0 +1,71 @@
+/* Documents (redesign phase 6). Tokens only. */
+.gw-docs { display: flex; flex: 1; min-height: 0; min-width: 0; }
+.gw-docs-main { flex: 1; min-width: 0; }
+/* With a file's panel open, the files keep at least 420 px: the panel gives
+   way (down to 280 px) instead of pushing the table into sideways scrolling. */
+.gw-docs > .gw-docs-main:has(~ .gw-inspector) { min-width: 420px; }
+.gw-docs > .gw-inspector { flex: 0 1 var(--gw-inspector-w, 440px); min-width: 280px; }
+.gw-docs-intro { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-3); margin-bottom: var(--sp-2); }
+.gw-docs-intro p { margin: 0; }
+.gw-docs-create { display: flex; gap: var(--sp-2); }
+.gw-docs-create input { width: 240px; }
+.gw-docs-how { margin: 0; max-width: 72ch; }
+
+.gw-collection { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: var(--sp-4); overflow: hidden; }
+.gw-collection-head { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-2); flex-wrap: wrap; }
+.gw-collection-toggle { display: inline-flex; align-items: center; gap: var(--sp-1); padding: 4px 8px; border: 0; border-radius: var(--radius); background: transparent; color: var(--text); font: inherit; cursor: pointer; min-width: 0; }
+.gw-collection-toggle:hover { background: var(--hover); }
+.gw-collection-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.gw-collection-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gw-collection-meta { flex: 1; min-width: 160px; color: var(--muted); font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+.gw-collection-actions { display: flex; align-items: center; gap: var(--sp-2); }
+.gw-collection-progress { display: grid; gap: var(--sp-1); padding: 0 var(--sp-4) var(--sp-3); }
+.gw-collection-report { padding: 0 var(--sp-4) var(--sp-3); }
+.gw-collection-body .gw-table-frame { border: 0; border-top: 1px solid var(--border); border-radius: 0; }
+.gw-collection-empty { margin: 0; padding: var(--sp-3) var(--sp-4); border-top: 1px solid var(--border); }
+.gw-file-status { margin-top: 4px; }
+.gw-row-actions { display: inline-flex; gap: var(--sp-1); justify-content: flex-end; }
+/* In a narrow table the row's buttons stack rather than widen it. */
+@container (max-width: 620px) {
+  .gw-row-actions { flex-wrap: wrap; }
+  .gw-table td:has(> .gw-row-actions) { white-space: normal; }
+}
+
+.gw-doc-text { display: flex; flex-direction: column; gap: var(--sp-3); }
+.gw-doc-text-name { font-weight: 600; overflow-wrap: anywhere; }
+.gw-doc-text-head p { margin: var(--sp-1) 0 0; }
+.gw-doc-text-tools { display: flex; align-items: center; gap: var(--sp-2); }
+.gw-doc-text-tools input { flex: 1; min-width: 0; }
+.gw-doc-passages { display: flex; flex-direction: column; gap: var(--sp-3); }
+.gw-doc-passage-n { font-size: var(--fs-xs); color: var(--disabled); margin-bottom: 2px; font-variant-numeric: tabular-nums; }
+.gw-doc-passage-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+.gw-doc-passage-text mark { background: color-mix(in srgb, var(--warn) 45%, transparent); color: var(--text); border-radius: 2px; }
+
+/* Two panes: collections on the left like Agent
+   and Chat, the selected collection's files on the right. */
+.gw-docs-list { display: flex; flex-direction: column; width: 260px; }
+.gw-docs-list > ul { flex: 1; overflow-y: auto; margin: 0; padding: 0 var(--sp-2); list-style: none; }
+.gw-docs-list .gw-docs-create { flex-direction: column; margin: var(--sp-3); gap: var(--sp-2); }
+.gw-docs-list .gw-docs-create input { width: 100%; }
+.gw-docs-item { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; width: 100%; text-align: left; padding: var(--sp-2) var(--sp-3); }
+.gw-docs-item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.gw-docs-search { display: flex; flex-direction: column; gap: var(--sp-1); padding: var(--sp-3); border-top: 1px solid var(--border); font-size: var(--fs-sm); }
+.gw-docs-search label { color: var(--muted); }
+.gw-docs-search select { width: 100%; }
+.gw-docs-search .gw-fold { margin: var(--sp-1) 0 0; }
+.gw-docs-main { display: flex; flex-direction: column; }
+.gw-docs-main > .gw-collection { margin-bottom: var(--sp-4); }
+.gw-collection-title { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 2px; padding-left: var(--sp-2); }
+.gw-collection-title h2 { margin: 0; font-size: var(--fs-lg); font-weight: 600; }
+.gw-collection-title .gw-collection-meta { flex: none; min-width: 0; }
+.gw-collection-head { padding: var(--sp-4) var(--sp-4) var(--sp-3) var(--sp-3); }
+/* No collections yet: one invitation in the middle, with the form in it. */
+.gw-docs-empty { margin: auto; max-width: 480px; width: 100%; display: flex; flex-direction: column; align-items: stretch; gap: var(--sp-4); }
+.gw-docs-empty .gw-docs-create input { flex: 1; width: auto; }
+.gw-docs-empty .gw-docs-search { border: 1px solid var(--border); border-radius: var(--radius-card); }
+@media (max-width: 760px) {
+  .gw-docs { flex-direction: column; }
+  .gw-docs-list { width: auto; max-height: 40vh; border-right: 0; border-bottom: 1px solid var(--border); }
+}
+.gw-docs-main > .gw-collection, .gw-docs-main > .gw-fold, .gw-docs-main > .banner { width: 100%; }
+.gw-docs-main > .gw-fold { max-width: var(--page-col); }

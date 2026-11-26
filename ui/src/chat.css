@@ -1,0 +1,34 @@
+/* Chat workspace (redesign phase 5). Shares the session header, context bar,
+   message actions and details panel styles with agent.css. Tokens only. */
+.gw-chat-head {
+  display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-5);
+  border-bottom: 1px solid var(--border); background: var(--chrome);
+}
+.gw-chat-head .gw-session-title { flex: 1; }
+.gw-on { color: var(--accent); }
+.gw-context-bar.static { cursor: default; }
+
+/* Messages: bubbles for you, actions on hover or focus (always on the latest reply). */
+.chat .message.user { border-radius: 16px 16px 4px 16px; padding: 9px 14px; position: relative; }
+.chat .message.user .user-foot { justify-content: flex-end; margin: 2px -6px -4px 0; }
+.gw-msg-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-3); margin-top: var(--sp-1); }
+.gw-msg-foot .gw-msg-actions { margin-top: 0; }
+.gw-msg-stats { font-size: var(--fs-xs); color: var(--muted); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.message.user:hover .gw-msg-actions, .message.user:focus-within .gw-msg-actions { opacity: 1; }
+
+/* The + menu: a mark shows how many options are on. */
+.gw-plus { position: relative; display: inline-flex; }
+.gw-plus-mark {
+  position: absolute; top: -2px; right: -4px; min-width: 15px; height: 15px; padding: 0 4px; border-radius: 999px;
+  background: var(--accent); color: var(--accent-text); font-size: 10px; font-weight: 600; line-height: 15px; text-align: center;
+  pointer-events: none; font-variant-numeric: tabular-nums;
+}
+.composer .gw-menu { top: auto; bottom: calc(100% + 6px); transform-origin: bottom left; }
+
+.gw-chat-prompt { width: 100%; resize: vertical; font: inherit; }
+.gw-chat-more { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+/* When a message was sent: shown on hover or keyboard focus. */
+.gw-msg-time { font-size: var(--fs-xs); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+.message:hover .gw-msg-time, .message:focus-within .gw-msg-time { opacity: 1; }
+.user-foot .gw-msg-time { margin-right: auto; padding-left: 6px; align-self: center; }
+@media (hover: none) { .gw-msg-time { opacity: 1; } }

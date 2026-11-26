@@ -1,0 +1,3 @@
+# Signed test bytes: line-ending conversion would break their signature.
+crates/gardenwall-app/tests/fixtures/updater/installer.bin -text
+crates/gardenwall-app/tests/fixtures/updater/installer.bin.sig -text

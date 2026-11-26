@@ -1,0 +1,9 @@
+# Windows programs link the C runtime into themselves, so they start on a
+# PC without the Visual C++ Redistributable (VCRUNTIME140.dll). Found on a
+# clean Windows Sandbox, 2026-11-24: the helpers failed to start there.
+# `scripts/pe-imports.py --check` verifies the built programs.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.aarch64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

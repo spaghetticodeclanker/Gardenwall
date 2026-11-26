@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-set-searxng-url"
+description = "Enables the set_searxng_url command without any pre-configured scope."
+commands.allow = ["set_searxng_url"]
+
+[[permission]]
+identifier = "deny-set-searxng-url"
+description = "Denies the set_searxng_url command without any pre-configured scope."
+commands.deny = ["set_searxng_url"]

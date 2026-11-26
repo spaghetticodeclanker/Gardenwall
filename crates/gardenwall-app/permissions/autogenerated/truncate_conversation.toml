@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-truncate-conversation"
+description = "Enables the truncate_conversation command without any pre-configured scope."
+commands.allow = ["truncate_conversation"]
+
+[[permission]]
+identifier = "deny-truncate-conversation"
+description = "Denies the truncate_conversation command without any pre-configured scope."
+commands.deny = ["truncate_conversation"]

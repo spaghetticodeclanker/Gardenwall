@@ -1,0 +1,47 @@
+
+[workspace]
+resolver = "3"
+members = [
+    "crates/gardenwall-app",
+    "crates/gardenwall-core",
+    "crates/gardenwall-policy",
+    "crates/gardenwall-store",
+    "crates/gardenwall-models",
+    "crates/gardenwall-inference",
+    "crates/gardenwall-sandbox",
+    "crates/gardenwall-relay",
+    "crates/gardenwall-fetch",
+    "crates/gardenwall-runtime",
+    "crates/gardenwall-fs",
+    "crates/gardenwall-keychain",
+    "crates/gardenwall-agent",
+    "crates/gardenwall-gpu",
+    "crates/gardenwall-egress",
+    "crates/gardenwall-parse",
+    "crates/gardenwall-rag",
+    "crates/gardenwall-mcp",
+    "crates/gardenwall-binary",
+    "crates/gardenwall-js",
+    "crates/gardenwall-fuzzkit",
+    "crates/gardenwall-bench",
+]
+# cargo-fuzz targets (nightly; never shipped) have their own workspace.
+exclude = ["fuzz"]
+
+[workspace.package]
+edition = "2024"
+license = "Apache-2.0"
+rust-version = "1.98"
+
+# Hashing multi-gigabyte models is ~14x slower unoptimized (about 67 MB/s
+# vs 940 MB/s), which made dev-build downloads spend minutes verifying.
+[profile.dev.package.sha2]
+opt-level = 3
+
+# Backups derive their key with Argon2id (256 MiB): unoptimized it takes
+# minutes in a dev build.
+[profile.dev.package.argon2]
+opt-level = 3
+
+[profile.dev.package.blake2]
+opt-level = 3

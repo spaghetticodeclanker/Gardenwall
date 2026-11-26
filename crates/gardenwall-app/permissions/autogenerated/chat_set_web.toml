@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-chat-set-web"
+description = "Enables the chat_set_web command without any pre-configured scope."
+commands.allow = ["chat_set_web"]
+
+[[permission]]
+identifier = "deny-chat-set-web"
+description = "Denies the chat_set_web command without any pre-configured scope."
+commands.deny = ["chat_set_web"]

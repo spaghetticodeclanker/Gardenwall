@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-transcripts"
+description = "Enables the agent_transcripts command without any pre-configured scope."
+commands.allow = ["agent_transcripts"]
+
+[[permission]]
+identifier = "deny-agent-transcripts"
+description = "Denies the agent_transcripts command without any pre-configured scope."
+commands.deny = ["agent_transcripts"]

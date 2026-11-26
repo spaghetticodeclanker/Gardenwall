@@ -1,0 +1,125 @@
+
+# Gardenwall AI — repository exclusions
+# This is defense in depth, not a secret-management boundary.
+
+# Environment and local configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.local
+config/local/
+config/private/
+secrets/
+
+# Credentials and cryptographic keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.kdbx
+id_rsa*
+id_ed25519*
+
+# Runtime data and databases
+data/
+# ...but not the model picker's lists, which are embedded in the app.
+!crates/gardenwall-app/data/
+runtime/
+uploads/
+conversations/
+backups/
+
+# SQLite databases and sidecar files
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.db.lock
+*.sqlite.lock
+*.sqlite3.lock
+
+# Model artifacts and checkpoints
+models/
+checkpoints/
+*.gguf
+*.ggml
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.onnx
+
+# Rust build outputs
+target/
+
+# Frontend dependencies and build outputs
+node_modules/
+dist/
+build/
+coverage/
+.next/
+.vite/
+
+# Logs and diagnostics
+*.log
+logs/
+*.dmp
+*.dump
+*.trace
+
+# Python tooling (future optional integrations)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editor and operating-system artifacts
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# macOS metadata
+.AppleDouble
+.LSOverride
+._*
+
+# Tauri generated schemas
+crates/gardenwall-app/gen/
+
+# AI-assistant and local tooling files (never part of the project)
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+/HANDOFF.md
+.mcp.json
+.cursor/
+.aider*
+.copilot/
+
+# Private planning notes (kept local, never published)
+docs/private/
+
+# Benchmark paths on this machine (contain the user name)
+bench/machine.json
+bench/results/STOP
+bench/results/*.progress.json
+bench/results/*.partial.jsonl
+
+# Helper programs staged for the installer (scripts/stage-helpers.mjs)
+crates/gardenwall-app/binaries/

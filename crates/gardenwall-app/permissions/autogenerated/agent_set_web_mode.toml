@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-set-web-mode"
+description = "Enables the agent_set_web_mode command without any pre-configured scope."
+commands.allow = ["agent_set_web_mode"]
+
+[[permission]]
+identifier = "deny-agent-set-web-mode"
+description = "Denies the agent_set_web_mode command without any pre-configured scope."
+commands.deny = ["agent_set_web_mode"]

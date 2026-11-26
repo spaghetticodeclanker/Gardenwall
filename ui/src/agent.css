@@ -1,0 +1,151 @@
+/* Agent workspace (redesign phase 4). Tokens only. */
+.gw-session { display: flex; flex: 1; min-width: 0; min-height: 0; }
+.gw-session-main { flex: 1; min-width: 0; }
+
+/* Header: the session's name, a one-line summary, and its actions. */
+.gw-session-head {
+  display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-3) var(--sp-5);
+  border-bottom: 1px solid var(--border); background: var(--chrome); flex-wrap: wrap;
+}
+.gw-session-title { flex: 1 1 320px; min-width: 0; }
+.gw-session-name { font-size: var(--fs-md); font-weight: 600; letter-spacing: -0.005em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gw-session-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 2px var(--sp-3); margin-top: 2px; font-size: var(--fs-sm); color: var(--muted); }
+.gw-session-sub .mono { font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-secondary); word-break: normal; }
+.gw-session-actions { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.gw-chip {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px;
+  border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--panel); color: var(--text-secondary);
+  font: inherit; font-size: var(--fs-sm); cursor: pointer; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.gw-chip:hover { border-color: var(--muted); color: var(--text); }
+/* Programs left running in the sandbox. */
+.gw-chip-running { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
+.gw-chip:focus-visible, .gw-chip-check:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.gw-chip-check input { margin: 0; accent-color: var(--accent); }
+
+/* Context bar: a hairline under the header. */
+.gw-context { padding: var(--sp-2) var(--sp-5); border-bottom: 1px solid var(--border); }
+.gw-context-bar {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-3); width: 100%;
+  padding: 2px 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; text-align: left;
+}
+.gw-context-bar:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-sm); }
+.gw-context-text { font-size: var(--fs-xs); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gw-context-text.warn { color: var(--warn); }
+.gw-context-text.danger { color: var(--danger); }
+.gw-context-speed { font-size: var(--fs-xs); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Messages: replies get a copy action on hover or focus; the latest always shows it. */
+.gw-session .message.user { border-radius: 16px 16px 4px 16px; padding: 9px 14px; }
+.gw-msg-actions { display: flex; gap: 2px; margin-top: var(--sp-1); opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+.message.assistant:hover .gw-msg-actions, .message.assistant:focus-within .gw-msg-actions, .message.assistant.latest .gw-msg-actions { opacity: 1; }
+@media (hover: none) { .gw-msg-actions { opacity: 1; } }
+
+/* Tool calls: one line each, expand on click. */
+.gw-tool { max-width: min(820px, 100%); border-radius: var(--radius); }
+.gw-tool > summary {
+  display: flex; align-items: center; gap: var(--sp-2); min-height: 30px; padding: 2px var(--sp-2);
+  list-style: none; cursor: pointer; border-radius: var(--radius); color: var(--text-secondary); font-size: var(--fs-sm);
+}
+.gw-tool > summary::-webkit-details-marker { display: none; }
+.gw-tool > summary:hover { background: var(--hover); }
+.gw-tool > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.gw-tool-name { font-weight: 500; color: var(--text); white-space: nowrap; }
+.gw-tool-arg { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.gw-tool-arg.mono { font-family: var(--font-mono); font-size: 12px; word-break: normal; }
+.gw-tool-icon { flex: none; }
+.gw-tool-icon.done { color: var(--ok); }
+.gw-tool-icon.failed { color: var(--danger); }
+.gw-tool-icon.running { color: var(--accent); animation: gw-spin 1s linear infinite; }
+@keyframes gw-spin { to { transform: rotate(360deg); } }
+.gw-tool-chevron { flex: none; color: var(--disabled); transition: transform var(--dur-fast) var(--ease-out); }
+.gw-tool[open] > summary .gw-tool-chevron { transform: rotate(90deg); }
+.gw-tool.failed > summary { color: var(--danger); }
+.gw-tool-body { padding: var(--sp-1) var(--sp-2) var(--sp-2) 30px; }
+.gw-tool-group-body { padding: 0 0 var(--sp-1) var(--sp-4); border-left: 1px solid var(--border); margin-left: 14px; }
+.gw-tool .tool-output { margin: var(--sp-1) 0 var(--sp-2) 30px; }
+
+/* The / menu: commands and skills with what they do. */
+.gw-slash {
+  margin: 0 max(20px, calc((100% - var(--column)) / 2)) var(--sp-2); padding: var(--sp-1); max-height: 280px; overflow-y: auto;
+  background: var(--raised); border: 1px solid var(--border-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-pop);
+  animation: gw-pop var(--dur-base) var(--ease-out);
+}
+.gw-slash-item {
+  display: grid; grid-template-columns: minmax(140px, max-content) minmax(0, 1fr) auto; align-items: baseline; gap: var(--sp-3);
+  width: 100%; padding: 7px var(--sp-2); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--text);
+  font: inherit; text-align: left; cursor: pointer;
+}
+.gw-slash-item:hover, .gw-slash-item.active { background: var(--accent-soft); }
+.gw-slash-name { font-family: var(--font-mono); font-size: 12.5px; white-space: nowrap; }
+.gw-slash-summary { color: var(--muted); font-size: var(--fs-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gw-slash-kind { font-size: var(--fs-xs); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); border-radius: var(--radius-sm); padding: 0 5px; }
+.gw-slash-hint { padding: var(--sp-1) var(--sp-2) 2px; font-size: var(--fs-xs); color: var(--disabled); }
+
+/* The dock above the composer: approvals, questions, run-yourself, research, the step pause. */
+.gw-dock { display: flex; flex-direction: column; gap: var(--sp-2); padding: 0 max(20px, calc((100% - var(--column)) / 2)); }
+.gw-dock:empty { display: none; }
+.gw-dock > * { margin-left: 0; margin-right: 0; }
+.gw-dock-card {
+  display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-3) var(--sp-4);
+  background: var(--panel); border: 1px solid var(--border-strong); border-radius: var(--radius-card);
+}
+.gw-dock-card .row { margin: 0; }
+
+/* The docked approval keeps the trusted frame: warning border, lock badge, its own surface. */
+.approval.approval-docked {
+  width: auto; max-height: 46vh; margin: var(--sp-1) 0 var(--sp-2); padding: var(--sp-4) var(--sp-5);
+  border: 2px solid var(--warn); background: var(--warn-soft); box-shadow: var(--shadow-pop);
+  animation: gw-approval-in var(--dur-panel) var(--ease-out);
+}
+.approval.approval-docked:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.approval-badge { display: inline-flex; align-items: center; gap: 6px; }
+@keyframes gw-approval-in {
+  from { opacity: 0; transform: translateY(10px); }
+  60% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--warn) 35%, transparent); }
+}
+
+/* Session details panel contents. */
+.gw-inspector-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.gw-inspector-list h4 { margin: var(--sp-3) 0 0; font-size: var(--fs-sm); font-weight: 600; color: var(--muted); }
+.gw-inspector-list h4:first-child { margin-top: 0; }
+.gw-inspector-list .mono { font-family: var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.gw-inspector-item { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-2) 0; border-bottom: 1px solid var(--border); }
+.gw-inspector-item > div { min-width: 0; }
+.gw-tasks { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+
+/* The details panel always sits beside the session, down to the 960 px
+   minimum window, so nothing is hidden under it.
+   In narrow windows it takes at most 45% of the session area. */
+@media (max-width: 1100px) {
+  .gw-session .gw-inspector { max-width: 45%; }
+  /* Chat: the same split, measured beside the chat list (the list isn't part of it). */
+  .chat-layout > .chat { flex: 55 1 0; }
+  .chat-layout > .gw-inspector { flex: 45 1 0; max-width: var(--gw-inspector-w, 440px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gw-tool-icon.running { animation: none; }
+  .gw-slash, .approval.approval-docked { animation: none; }
+}
+/* Long diffs scroll inside the docked card; its buttons stay in view. */
+.approval.approval-docked .approval-actions {
+  position: sticky; bottom: calc(var(--sp-4) * -1); margin: var(--sp-3) calc(var(--sp-5) * -1) calc(var(--sp-4) * -1);
+  padding: var(--sp-3) var(--sp-5); background: var(--warn-soft); border-top: 1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+}
+/* The session's growth tree: grows a branch as tool calls finish. */
+.gw-session-growth { width: 72px; height: 42px; flex: none; opacity: 0.9; }
+.gw-session-growth .gw-growth { filter: none; }
+.gw-session-growth .gw-growth-lines path { stroke-opacity: 0.45; stroke-width: 1.6; }
+.gw-session-growth .gw-growth-nodes circle.newest { fill-opacity: 1; animation: gw-bud-pulse 1.2s var(--ease-out); }
+@keyframes gw-bud-pulse { 0% { r: 5; fill-opacity: 1; } 100% { fill-opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .gw-session-growth .gw-growth-nodes circle.newest { animation: none; } }
+
+/* The session's larger tree, in the empty space to the right of the
+   conversation column; it disappears when there isn't room for it. */
+.gw-session-main { container: session / inline-size; isolation: isolate; }
+.gw-session-tree {
+  position: absolute; right: var(--sp-4); bottom: 150px; height: min(52vh, 560px); z-index: -1; pointer-events: none;
+  width: clamp(0px, calc((100% - var(--column)) / 2 - 32px), 380px); opacity: 0.85;
+}
+@container session (max-width: 1240px) { .gw-session-tree { display: none; } }
+.gw-shell-status { color: var(--warn); font-weight: 600; }

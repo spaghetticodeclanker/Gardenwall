@@ -1,0 +1,57 @@
+# cargo-deny policy for Gardenwall. See https://embarkstudios.github.io/cargo-deny/
+[graph]
+all-features = true
+
+[advisories]
+# RustSec advisories fail the build; yanked crates are denied.
+yanked = "deny"
+ignore = [
+    # Unmaintained (not vulnerable) proc-macro used at build time by GTK
+    # bindings in Tauri's Linux stack (glib-macros 0.18). No upgrade exists
+    # until Tauri moves to gtk4; it never runs in the shipped app.
+    { id = "RUSTSEC-2024-0370", reason = "build-time only, via Tauri's Linux GTK stack; no upgrade path" },
+    # Unmaintained (not vulnerable): zbus 5's D-Bus wire-format crates, used
+    # only on Linux by tauri-plugin-notification (owner decision 2026-11-19:
+    # system notifications). No upgrade exists yet; revisit when zbus 6 or
+    # the plugin moves. The notification text is only a session name and an
+    # event type, built by the core.
+    { id = "RUSTSEC-2026-0370", reason = "Linux-only D-Bus transport of tauri-plugin-notification; no upgrade path yet" },
+    { id = "RUSTSEC-2026-0371", reason = "Linux-only D-Bus transport of tauri-plugin-notification; no upgrade path yet" },
+    { id = "RUSTSEC-2026-0372", reason = "Linux-only D-Bus transport of tauri-plugin-notification; no upgrade path yet" },
+]
+
+[licenses]
+# Permissive licenses compatible with distributing Gardenwall under Apache-2.0.
+allow = [
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "MIT",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Unicode-3.0",
+    # Mozilla CA root certificate data (webpki-root-certs).
+    "CDLA-Permissive-2.0",
+    # File-level copyleft used by Servo's CSS crates in Tauri's dependency
+    # tree (cssparser, selectors, dtoa-short) and option-ext. Distributing
+    # unmodified MPL files inside an Apache-2.0 app is permitted; any
+    # changes to those files would have to be published under MPL-2.0.
+    "MPL-2.0",
+]
+confidence-threshold = 0.9
+
+[licenses.private]
+# Workspace crates are not published; they inherit Apache-2.0.
+ignore = true
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+allow-wildcard-paths = true
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

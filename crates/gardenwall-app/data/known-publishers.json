@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-20",
+  "note": "Hub account names of original model makers and long-standing quantizers. A match gets the label \"Known publisher\": it says who published a repository, not that its files are safe or good. Compared ignoring case.",
+  "makers": [
+    "Qwen",
+    "google",
+    "meta-llama",
+    "mistralai",
+    "microsoft",
+    "nvidia",
+    "deepseek-ai",
+    "openai",
+    "ibm-granite",
+    "allenai",
+    "HuggingFaceTB",
+    "CohereLabs",
+    "LiquidAI",
+    "zai-org",
+    "moonshotai",
+    "MiniMaxAI",
+    "tencent",
+    "baidu",
+    "internlm",
+    "stepfun-ai",
+    "ByteDance-Seed"
+  ],
+  "quantizers": [
+    "ggml-org",
+    "unsloth",
+    "bartowski",
+    "lmstudio-community",
+    "mradermacher",
+    "MaziyarPanahi"
+  ]
+}

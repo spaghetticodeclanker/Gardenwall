@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-stop-background"
+description = "Enables the agent_stop_background command without any pre-configured scope."
+commands.allow = ["agent_stop_background"]
+
+[[permission]]
+identifier = "deny-agent-stop-background"
+description = "Denies the agent_stop_background command without any pre-configured scope."
+commands.deny = ["agent_stop_background"]

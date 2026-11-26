@@ -1,0 +1,24 @@
+[package]
+name = "gardenwall-store"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Gardenwall persistent authorization, session, and audit storage (SQLite)."
+publish = false
+
+[dependencies]
+rusqlite = { version = "0.42", features = ["bundled"] }
+chacha20poly1305 = { version = "0.11.0", default-features = false, features = ["alloc"] }
+base64 = "0.23.1"
+zeroize = "1.9.1"
+getrandom = "0.4.3"
+argon2 = { version = "0.6.0", default-features = false, features = ["alloc", "zeroize"] }
+sha2 = "0.10"
+uuid = { version = "1", features = ["v4"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1"
+gardenwall-core = { path = "../gardenwall-core" }
+
+[dev-dependencies]
+tempfile = "3"

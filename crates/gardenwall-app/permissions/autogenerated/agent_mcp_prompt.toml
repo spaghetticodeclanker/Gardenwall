@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-mcp-prompt"
+description = "Enables the agent_mcp_prompt command without any pre-configured scope."
+commands.allow = ["agent_mcp_prompt"]
+
+[[permission]]
+identifier = "deny-agent-mcp-prompt"
+description = "Denies the agent_mcp_prompt command without any pre-configured scope."
+commands.deny = ["agent_mcp_prompt"]

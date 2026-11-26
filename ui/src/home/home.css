@@ -1,0 +1,192 @@
+/* Home (phase 2). Tokens only. */
+.gw-home { padding: clamp(20px, 3vh, 40px) clamp(16px, 4vw, 56px) 48px; }
+.page.gw-home > * { max-width: 1320px; margin-left: auto; margin-right: auto; }
+@media (min-width: 2000px) { .page.gw-home > * { max-width: 1560px; } }
+.gw-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-5); min-width: 0; }
+.gw-card h2 { font-size: var(--fs-md); font-weight: 600; margin: 0 0 var(--sp-3); letter-spacing: -0.005em; }
+.gw-home-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); margin-bottom: var(--sp-3); }
+.gw-home-card-head h2 { margin: 0; }
+
+/* Hero: text and the model card, growth behind the empty right side. */
+.gw-home-hero {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 440px); gap: var(--sp-6);
+  align-items: end; padding: var(--sp-6) 0 var(--sp-6); margin-bottom: var(--sp-4); min-height: 240px; isolation: isolate;
+}
+.gw-home-art { position: absolute; top: -12px; bottom: 0; left: 34%; right: 400px; z-index: -1;
+  mask-image: linear-gradient(to right, transparent, black 25%, black 75%, transparent); }
+.gw-home-hero-text h1 { font-size: 28px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 600; margin: 0 0 var(--sp-2); }
+.gw-home-hero-text p { margin: 0; color: var(--text-secondary); max-width: 46ch; }
+
+.gw-home-model { background: color-mix(in srgb, var(--panel) 92%, transparent); backdrop-filter: blur(8px); }
+.gw-home-model-head { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.gw-home-model-name { font-size: var(--fs-md); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1; }
+.gw-home-model-facts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-3); margin: var(--sp-2) 0 var(--sp-4); color: var(--muted); font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+.gw-home-model-facts span { display: inline-flex; align-items: center; gap: 4px; }
+.gw-home-model-facts .ok { color: var(--ok); }
+.gw-home-model-facts .danger { color: var(--danger); }
+.gw-home-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.gw-home-fav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1px solid var(--border); font-size: var(--fs-sm); color: var(--muted); }
+.gw-home-fav b { color: var(--text-secondary); font-weight: 500; }
+.gw-home-fav svg.on { color: var(--accent); fill: var(--accent); }
+.gw-home-fav-launch { display: inline-flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+.gw-linkbtn { border: 0; background: transparent; color: var(--link); font: inherit; padding: 2px 4px; border-radius: var(--radius-sm); cursor: pointer; }
+.gw-linkbtn:hover { background: var(--hover); }
+.gw-linkbtn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* The dashboard grid. */
+.gw-home-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4); }
+.gw-home-quiet { margin: 0; }
+.gw-home-note { margin: var(--sp-3) 0 0; font-size: var(--fs-sm); }
+.gw-home-bar + .gw-home-bar { margin-top: var(--sp-4); }
+.gw-home-bar-head { display: flex; justify-content: space-between; gap: var(--sp-3); margin-bottom: var(--sp-2); font-variant-numeric: tabular-nums; }
+.gw-home-bar-head span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gw-home-apps { font-size: var(--fs-sm); margin-top: var(--sp-2); }
+
+.gw-home-list { list-style: none; margin: 0; padding: 0; }
+.gw-home-list li { display: flex; align-items: center; gap: var(--sp-3); min-height: 44px; padding: var(--sp-1) 0; }
+.gw-home-list li + li { border-top: 1px solid var(--border); }
+.gw-home-list-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gw-home-status { width: 8px; height: 8px; padding: 0; border-radius: 50%; background: var(--disabled); flex: none; aspect-ratio: 1; }
+.gw-home-status[data-status="working"] { background: var(--accent); animation: gw-pulse 1.4s ease-in-out infinite; }
+.gw-home-status[data-status="open"], .gw-home-status[data-status="finished"] { background: var(--ok); }
+.gw-home-status[data-status="waitingTurn"], .gw-home-status[data-status="approval"], .gw-home-status[data-status="paused"] { background: var(--warn); }
+.gw-home-status[data-status="failed"] { background: var(--danger); }
+.gw-home-status[data-status="saved"] { background: transparent; box-shadow: inset 0 0 0 1.5px var(--border-strong); }
+@keyframes gw-pulse { 50% { opacity: 0.35; } }
+
+.gw-home-facts { list-style: none; margin: 0; padding: 0; }
+.gw-home-facts li { display: grid; grid-template-columns: 20px 120px minmax(0, 1fr); align-items: center; gap: var(--sp-2); min-height: 36px; }
+.gw-home-facts li + li { border-top: 1px solid var(--border); }
+.gw-home-facts svg { color: var(--muted); }
+.gw-home-facts .warn { color: var(--warn); }
+.gw-home-facts .danger { color: var(--danger); }
+.gw-home-facts span:last-child { overflow-wrap: anywhere; }
+
+@media (max-width: 980px) {
+  .gw-home { padding: var(--sp-4); }
+  .gw-home-hero { grid-template-columns: 1fr; }
+  .gw-home-grid { grid-template-columns: 1fr; }
+  .gw-home-fav-launch { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gw-home-status[data-status="working"] { animation: none; }
+}
+
+/* Home uses the window, and shows work as it happens. */
+.gw-home-grid { gap: var(--sp-5); }
+.gw-home-grid > .gw-card { min-height: 0; }
+.gw-home-hero { min-height: clamp(220px, 26vh, 360px); }
+.gw-home-hero-text h1 { font-size: clamp(28px, 2.4vw, 40px); }
+.gw-home-hero-text p { font-size: clamp(14px, 1vw, 17px); }
+.gw-home-count { font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+
+.gw-home-working { margin-bottom: var(--sp-5); }
+.gw-home-work { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: var(--sp-3); }
+.gw-home-work-row {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--sp-3); align-items: start;
+  padding: var(--sp-4); border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--bg);
+  animation: gw-rise var(--dur-panel) var(--ease-out);
+}
+.gw-home-work-row[data-status="approval"] { border-color: color-mix(in srgb, var(--warn) 45%, var(--border)); }
+.gw-home-work-row > .gw-home-status { margin-top: 7px; }
+.gw-home-work-main { min-width: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.gw-home-work-title { display: flex; align-items: center; gap: var(--sp-2); min-width: 0; }
+.gw-home-work-name {
+  border: 0; background: transparent; color: var(--text); font: inherit; font-weight: 600; padding: 0; cursor: pointer;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; text-align: left;
+}
+.gw-home-work-name:hover { color: var(--link); }
+.gw-home-work-name:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-sm); }
+.gw-home-work-step { color: var(--text-secondary); }
+.gw-home-work-facts { color: var(--muted); font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+.gw-home-work-facts.gw-left-running { color: var(--warn); }
+.gw-home-work-progress { height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; margin-top: var(--sp-1); }
+.gw-home-work-progress span { display: block; height: 100%; background: var(--accent); transition: width var(--dur-base) var(--ease-out); }
+.gw-home-work-recent { list-style: none; display: flex; flex-wrap: wrap; gap: var(--sp-1); margin: var(--sp-2) 0 0; padding: 0; }
+.gw-home-work-recent li {
+  font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--muted); padding: 1px 6px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.gw-home-work-recent li.now { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+
+/* Very wide windows: three columns, so the cards don't stretch into long rows. */
+@media (min-width: 1800px) {
+  .gw-home-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-flow: dense; }
+  .gw-home-grid > .gw-home-sessions { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) { .gw-home-work-row { animation: none; } }
+/* A larger tree in the hero's empty middle (it is fitted to this box, so never clipped). */
+.gw-home-art { top: 0; left: 30%; right: min(470px, 36%); mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent); }
+@media (max-width: 980px) { .gw-home-art { left: 40%; right: 0; opacity: 0.6; } }
+/* Home fits one screen: lists are capped, and while
+   sessions work the welcome above them gets shorter. */
+.gw-home-status[data-status="needsYou"] { background: var(--warn); }
+.gw-home-more { min-height: 0 !important; padding-top: var(--sp-2) !important; }
+.gw-home-working > .gw-home-more { margin-top: var(--sp-2); }
+.gw-home.busy .gw-home-hero { min-height: 0; padding: var(--sp-2) 0 var(--sp-3); }
+.gw-home.busy .gw-home-hero-text h1 { font-size: clamp(22px, 1.8vw, 30px); }
+.gw-home.busy .gw-home-working { margin-bottom: var(--sp-4); }
+.gw-home.busy .gw-home-work-recent { margin-top: var(--sp-1); }
+@media (max-height: 900px) {
+  .gw-home-hero { min-height: 0; padding: var(--sp-3) 0; }
+}
+.gw-home { padding-bottom: var(--sp-6); }
+.gw-home-hero { min-height: clamp(180px, 22vh, 320px); }
+.gw-home.busy .gw-home-fav { margin-top: var(--sp-3); padding-top: var(--sp-2); }
+.gw-home.busy .gw-home-model-facts { margin: var(--sp-1) 0 var(--sp-3); }
+.gw-home.busy .gw-home-grid { gap: var(--sp-4); }
+.gw-home.busy .gw-card { padding: var(--sp-4) var(--sp-5); }
+.gw-home.busy .gw-home-work-row { padding: var(--sp-3) var(--sp-4); }
+
+/* The welcome takes whatever height is left on the screen.
+   The tree is as large as it can be and Home still never scrolls. */
+.page.gw-home { display: flex; flex-direction: column; }
+.page.gw-home > * { flex: none; width: 100%; }
+.gw-home-art { top: 0; bottom: 0; }
+
+/* Option A: the welcome area grows only up to
+   about 40% of the screen height; any further spare space is split evenly
+   above and below, so the whole dashboard stays centred. "Working now"
+   takes its room from that spare space first. (Auto margins rather than
+   centring, so a dashboard taller than the window still starts at the top.) */
+.page.gw-home > .gw-home-hero { margin-top: auto; }
+.page.gw-home > :last-child { margin-bottom: auto; }
+.page.gw-home > .gw-home-hero { flex: 0 1 auto; height: clamp(200px, 40vh, 560px); min-height: 200px; }
+.gw-home.busy .gw-home-hero { height: clamp(200px, 30vh, 420px); }
+@media (max-height: 900px) {
+  .page.gw-home > .gw-home-hero { height: clamp(200px, 32vh, 360px); }
+  .gw-home.busy .gw-home-hero { height: 200px; }
+}
+
+/* Portrait: the text and model card sit at the hero's foot, and the tree
+   has the whole width above them instead of a narrow middle strip. */
+@media (orientation: portrait) {
+  .gw-home-art { left: 6%; right: 6%; bottom: 210px; mask-image: none; }
+  .gw-home.busy .gw-home-art { bottom: 190px; }
+}
+/* Short screens while sessions work: the favourite line can wait. */
+@media (max-height: 1200px) {
+  .gw-home.busy .gw-home-fav { display: none; }
+  .gw-home.busy .gw-home-model-facts { margin-bottom: var(--sp-2); }
+}
+/* While sessions work, the welcome may shrink to its own content (never below it). */
+.page.gw-home.busy > .gw-home-hero { min-height: auto; }
+
+
+/* Bloom and focus: a layer
+   over the visible part of Home that carries the faint green light on the
+   reveal's edge (no dot at the centre). Home's own opacity, mask, blur and
+   scale, and this layer's light, are set from script. */
+.page.gw-home { position: relative; }
+.page.gw-home > .gw-home-bloom {
+  position: absolute; left: 0; right: 0; top: 0; height: 0; width: auto; z-index: 5;
+  opacity: 0; pointer-events: none; flex: none; margin: 0 !important; max-width: none;
+}
+
+/* The model arriving: its status dot pulses once. */
+.gw-home-model.arrived .gw-model-dot { animation: gw-home-dot 900ms ease-out 250ms; }
+@keyframes gw-home-dot {
+  0% { box-shadow: 0 0 0 3px var(--accent-soft), 0 0 0 0 rgba(79, 191, 127, 0.6); }
+  100% { box-shadow: 0 0 0 3px var(--accent-soft), 0 0 0 14px rgba(79, 191, 127, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .gw-home-model.arrived .gw-model-dot { animation: none; } }

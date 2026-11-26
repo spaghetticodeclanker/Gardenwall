@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-20",
+  "note": "The newest GPU display driver security bulletin per vendor, and the first fixed Windows driver in each driver branch. Read from the vendor's own bulletin; update this file when a newer bulletin is published. A driver in a branch newer than every branch listed is taken as current. GeForce numbers are used where GeForce and workstation drivers differ, so a GeForce driver is never called out of date wrongly.",
+  "nvidia": {
+    "bulletin": "Security Bulletin: GPU Display Driver - September 2026 (5861), updated 2026-10-13",
+    "source": "https://github.com/NVIDIA/product-security/blob/main/2026/5861/5861.md",
+    "summary": "It fixes driver problems that include one program reaching another program's GPU memory or state.",
+    "branches": [
+      { "name": "R580", "from": 580, "before": 595, "fixed": "582.78" },
+      { "name": "R595", "from": 595, "before": 610, "fixed": "596.86" },
+      { "name": "R610", "from": 610, "before": 615, "fixed": "610.88" },
+      { "name": "R615", "from": 615, "before": 620, "fixed": "616.56" }
+    ]
+  }
+}

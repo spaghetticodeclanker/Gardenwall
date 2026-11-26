@@ -1,0 +1,14 @@
+[package]
+name = "gardenwall-relay"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Untrusted in-sandbox relay between the trusted core's named pipe and the inference runtime's container-local port (ADR-012 §4.1)."
+publish = false
+
+[target.'cfg(windows)'.dependencies]
+tokio = { version = "1.54.1", features = ["net", "io-util", "rt", "macros", "time", "sync"] }
+
+[target.'cfg(windows)'.dev-dependencies]
+tokio = { version = "1.54.1", features = ["net", "io-util", "rt-multi-thread", "macros", "time", "sync"] }

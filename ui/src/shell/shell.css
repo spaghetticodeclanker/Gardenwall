@@ -1,0 +1,76 @@
+/* The redesigned shell (Phase 1): top bar, workspace tabs, model chip, gear
+   menu and the header of pages behind the gear. Tokens only. */
+
+.shell { flex-direction: column; }
+.content { min-height: 0; }
+
+.gw-topbar {
+  display: flex; align-items: center; gap: var(--sp-2); height: 48px; padding: 0 var(--sp-3) 0 var(--sp-2);
+  background: var(--chrome); border-bottom: 1px solid var(--border); flex: none;
+}
+.gw-topbar-spacer { flex: 1; min-width: var(--sp-2); }
+
+.gw-brand {
+  display: inline-flex; align-items: center; gap: var(--sp-2); height: 32px; padding: 0 10px 0 var(--sp-2);
+  border: 0; border-radius: var(--radius); background: transparent; color: var(--text); font: inherit; font-weight: 600;
+  letter-spacing: -0.01em; cursor: pointer;
+}
+.gw-brand .gw-mark { color: var(--accent); }
+.gw-brand:hover { background: var(--hover); }
+.gw-brand.active { background: var(--panel); }
+
+.gw-ws-tabs { display: flex; gap: 2px; padding: 3px; margin-left: var(--sp-2); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-card); }
+.gw-ws-tab {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 var(--sp-3);
+  border: 0; border-radius: var(--radius); background: transparent; color: var(--muted); font: inherit; font-weight: 500; cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.gw-ws-tab:hover { color: var(--text); }
+.gw-ws-tab.active { background: var(--panel); color: var(--text); box-shadow: inset 0 0 0 1px var(--border-strong); }
+.gw-ws-tab.active svg { color: var(--accent); }
+
+.gw-model-chip {
+  display: inline-flex; align-items: center; gap: var(--sp-2); height: 32px; max-width: 340px; padding: 0 var(--sp-3);
+  border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--panel); color: var(--text);
+  font: inherit; cursor: pointer; min-width: 0;
+}
+.gw-model-chip:hover { border-color: var(--muted); }
+.gw-model-chip.empty { color: var(--muted); }
+.gw-model-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.gw-model-dot.danger { background: var(--danger); box-shadow: 0 0 0 3px var(--danger-soft); }
+.gw-model-dot.off { background: var(--disabled); box-shadow: none; }
+.gw-model-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.gw-model-meta { color: var(--muted); font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+
+.gw-gear { position: relative; display: inline-flex; }
+.gw-gear-badge { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--warn); box-shadow: 0 0 0 2px var(--chrome); pointer-events: none; }
+.gw-gear-badge.danger { background: var(--danger); }
+.gw-hint-warn { color: var(--warn); }
+.gw-hint-danger { color: var(--danger); }
+
+.gw-btn:focus-visible, .gw-brand:focus-visible, .gw-ws-tab:focus-visible, .gw-model-chip:focus-visible, .gw-back:focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 2px;
+}
+
+.gw-page-head { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-6) 0; flex: none; }
+.gw-back {
+  display: inline-flex; align-items: center; gap: 2px; height: 28px; padding: 0 var(--sp-2) 0 var(--sp-1);
+  border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font: inherit; cursor: pointer;
+}
+.gw-back:hover { background: var(--hover); color: var(--text); }
+.gw-page-title { margin: 0; font-size: var(--fs-lg); font-weight: 600; letter-spacing: -0.01em; }
+
+
+@media (max-width: 760px) {
+  .gw-brand span { display: none; }
+  .gw-model-chip { max-width: 180px; }
+}
+.gw-page-help { margin-left: calc(var(--sp-1) * -1); color: var(--muted); }
+
+/* Lockdown is on (GW-019): a clear state that opens the unlock dialog. */
+.gw-lockdown-on {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px;
+  border-radius: 999px; border: 1px solid var(--warn, #d9a441); background: color-mix(in srgb, var(--warn, #d9a441) 18%, transparent);
+  color: var(--warn, #d9a441); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.gw-lockdown-on:hover { background: color-mix(in srgb, var(--warn, #d9a441) 28%, transparent); }

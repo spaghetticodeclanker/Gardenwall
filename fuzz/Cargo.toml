@@ -1,0 +1,102 @@
+# cargo-fuzz targets for every parser of untrusted data (Phase 6). They
+# reuse the inputs of the stable `gardenwall-fuzzkit` robustness tests, which
+# run in CI on every push; these run longer, coverage-guided, on nightly
+# (weekly in `.github/workflows/hygiene.yml`). See fuzz/README.md.
+#
+# Kept out of the main workspace (its own [workspace] and Cargo.lock): it
+# needs nightly and libFuzzer, which never ship in Gardenwall.
+[package]
+name = "gardenwall-fuzz"
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[workspace]
+
+[dependencies]
+libfuzzer-sys = "0.4.13"
+gardenwall-agent = { path = "../crates/gardenwall-agent" }
+gardenwall-binary = { path = "../crates/gardenwall-binary" }
+gardenwall-egress = { path = "../crates/gardenwall-egress" }
+gardenwall-inference = { path = "../crates/gardenwall-inference" }
+# No hub client: only the validators are fuzzed.
+gardenwall-models = { path = "../crates/gardenwall-models", default-features = false }
+gardenwall-parse = { path = "../crates/gardenwall-parse" }
+gardenwall-rag = { path = "../crates/gardenwall-rag" }
+
+[[bin]]
+name = "gguf"
+path = "fuzz_targets/gguf.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "template_audit"
+path = "fuzz_targets/template_audit.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "html"
+path = "fuzz_targets/html.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "documents"
+path = "fuzz_targets/documents.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "binary"
+path = "fuzz_targets/binary.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "sse"
+path = "fuzz_targets/sse.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "server_log"
+path = "fuzz_targets/server_log.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "egress"
+path = "fuzz_targets/egress.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "rag"
+path = "fuzz_targets/rag.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "script_step"
+path = "fuzz_targets/script_step.rs"
+test = false
+doc = false
+bench = false
+
+[profile.release]
+debug = 1

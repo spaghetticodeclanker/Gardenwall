@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-handoff-save-as"
+description = "Enables the handoff_save_as command without any pre-configured scope."
+commands.allow = ["handoff_save_as"]
+
+[[permission]]
+identifier = "deny-handoff-save-as"
+description = "Denies the handoff_save_as command without any pre-configured scope."
+commands.deny = ["handoff_save_as"]

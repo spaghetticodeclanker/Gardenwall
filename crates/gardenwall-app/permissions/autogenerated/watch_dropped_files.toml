@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-watch-dropped-files"
+description = "Enables the watch_dropped_files command without any pre-configured scope."
+commands.allow = ["watch_dropped_files"]
+
+[[permission]]
+identifier = "deny-watch-dropped-files"
+description = "Denies the watch_dropped_files command without any pre-configured scope."
+commands.deny = ["watch_dropped_files"]

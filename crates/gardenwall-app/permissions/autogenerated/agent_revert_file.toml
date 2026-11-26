@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-revert-file"
+description = "Enables the agent_revert_file command without any pre-configured scope."
+commands.allow = ["agent_revert_file"]
+
+[[permission]]
+identifier = "deny-agent-revert-file"
+description = "Denies the agent_revert_file command without any pre-configured scope."
+commands.deny = ["agent_revert_file"]

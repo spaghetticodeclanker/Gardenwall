@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-init-project-repository"
+description = "Enables the init_project_repository command without any pre-configured scope."
+commands.allow = ["init_project_repository"]
+
+[[permission]]
+identifier = "deny-init-project-repository"
+description = "Denies the init_project_repository command without any pre-configured scope."
+commands.deny = ["init_project_repository"]

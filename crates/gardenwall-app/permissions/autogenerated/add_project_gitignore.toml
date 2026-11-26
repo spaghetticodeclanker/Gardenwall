@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-add-project-gitignore"
+description = "Enables the add_project_gitignore command without any pre-configured scope."
+commands.allow = ["add_project_gitignore"]
+
+[[permission]]
+identifier = "deny-add-project-gitignore"
+description = "Denies the add_project_gitignore command without any pre-configured scope."
+commands.deny = ["add_project_gitignore"]

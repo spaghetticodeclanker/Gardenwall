@@ -1,0 +1,23 @@
+[package]
+name = "gardenwall-js"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Untrusted, sandboxed worker that runs a model-written JavaScript program (code mode, ADR-014). No network, no files; its only channel is tool-call requests to the core over stdin/stdout."
+publish = false
+
+[dependencies]
+# Pure Rust engine. Default features (Temporal, ICU data) are left out.
+boa_engine = { version = "0.22.0", default-features = false }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+
+[dev-dependencies]
+gardenwall-agent = { path = "../gardenwall-agent" }
+tempfile = "3.27.0"
+tokio = { version = "1.54.1", features = ["rt", "macros", "time"] }
+
+[[bin]]
+name = "gardenwall-js"
+path = "src/main.rs"

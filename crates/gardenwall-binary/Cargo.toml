@@ -1,0 +1,19 @@
+[package]
+name = "gardenwall-binary"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Untrusted, sandboxed worker that describes executables (PE, ELF, Mach-O): headers, sections, imports, exports, strings, functions, hex and x86/x64 disassembly. It never runs the file. No network, no files."
+publish = false
+
+[dependencies]
+goblin = { version = "0.10.7", default-features = false, features = ["std", "elf32", "elf64", "mach32", "mach64", "pe32", "pe64", "te", "archive", "endian_fd"] }
+iced-x86 = { version = "1.22.0", default-features = false, features = ["std", "decoder", "intel", "instr_info"] }
+
+[dev-dependencies]
+gardenwall-fuzzkit = { path = "../gardenwall-fuzzkit" }
+
+[[bin]]
+name = "gardenwall-binary"
+path = "src/main.rs"

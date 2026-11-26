@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-instructions"
+description = "Enables the agent_instructions command without any pre-configured scope."
+commands.allow = ["agent_instructions"]
+
+[[permission]]
+identifier = "deny-agent-instructions"
+description = "Denies the agent_instructions command without any pre-configured scope."
+commands.deny = ["agent_instructions"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-dictation-partial"
+description = "Enables the dictation_partial command without any pre-configured scope."
+commands.allow = ["dictation_partial"]
+
+[[permission]]
+identifier = "deny-dictation-partial"
+description = "Denies the dictation_partial command without any pre-configured scope."
+commands.deny = ["dictation_partial"]

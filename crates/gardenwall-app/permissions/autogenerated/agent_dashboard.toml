@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-dashboard"
+description = "Enables the agent_dashboard command without any pre-configured scope."
+commands.allow = ["agent_dashboard"]
+
+[[permission]]
+identifier = "deny-agent-dashboard"
+description = "Denies the agent_dashboard command without any pre-configured scope."
+commands.deny = ["agent_dashboard"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-set-binary-folder"
+description = "Enables the set_binary_folder command without any pre-configured scope."
+commands.allow = ["set_binary_folder"]
+
+[[permission]]
+identifier = "deny-set-binary-folder"
+description = "Denies the set_binary_folder command without any pre-configured scope."
+commands.deny = ["set_binary_folder"]

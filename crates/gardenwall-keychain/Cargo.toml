@@ -1,0 +1,19 @@
+[package]
+name = "gardenwall-keychain"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "OS-protected keys for Gardenwall (Windows DPAPI)"
+publish = false
+
+[dependencies]
+zeroize = "1.9.1"
+getrandom = "0.4.3"
+
+[target.'cfg(windows)'.dependencies.windows-sys]
+version = "0.61"
+features = ["Win32_Foundation", "Win32_Security_Cryptography"]
+
+[dev-dependencies]
+tempfile = "3.27.0"

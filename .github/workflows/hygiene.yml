@@ -1,0 +1,98 @@
+# Weekly dependency hygiene (ROADMAP Phase 3.5): new advisories, and which
+# dependencies have newer versions. It only reports. Updates are proposed
+# to the maintainer and land as reviewed commits, never automatically.
+# Third-party actions are pinned to full commit SHAs (tag noted alongside).
+name: Dependency hygiene
+
+on:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_TOOLCHAIN: "1.98"
+
+jobs:
+  advisories:
+    name: Advisories and licences (cargo-deny)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: EmbarkStudios/cargo-deny-action@3c6349835b2b7b196a839186cb8b78e02f7b5f25 # v2.1.1
+        with:
+          command: check advisories bans licenses sources
+
+  outdated:
+    name: Available updates (report only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Rust toolchain
+        run: |
+          rustup toolchain install "$RUST_TOOLCHAIN" --profile minimal
+          rustup default "$RUST_TOOLCHAIN"
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+      - name: Rust crates with newer compatible versions
+        run: |
+          {
+            echo "## Rust: compatible updates (cargo update --dry-run)"
+            echo '```'
+            cargo update --workspace --dry-run 2>&1 | grep -E 'Updating|Adding|Removing' || echo "none"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: npm packages
+        working-directory: ui
+        run: |
+          npm ci --no-audit --no-fund
+          {
+            echo "## npm audit (production)"
+            echo '```'
+            npm audit --omit=dev || true
+            echo '```'
+            echo "## npm outdated"
+            echo '```'
+            npm outdated || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  fuzz:
+    # Coverage-guided fuzzing of the parsers of untrusted data (Phase 6;
+    # fuzz/README.md). The stable robustness tests run on every push; this
+    # explores further once a week. A crash fails the job and keeps the input.
+    name: Fuzz (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [gguf, template_audit, html, documents, binary, sse, server_log, egress, rag, script_step]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install nightly Rust and cargo-fuzz
+        run: |
+          rustup toolchain install nightly --profile minimal
+          cargo +nightly install cargo-fuzz --version 0.13.2 --locked
+      - name: Fuzz for 5 minutes
+        working-directory: fuzz
+        run: |
+          mkdir -p "corpus/${{ matrix.target }}"
+          cargo +nightly fuzz run "${{ matrix.target }}" "corpus/${{ matrix.target }}" -- -max_total_time=300 -rss_limit_mb=2048 -timeout=10
+      - name: Keep the crashing input
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fuzz-crash-${{ matrix.target }}
+          path: fuzz/artifacts/${{ matrix.target }}
+          retention-days: 30

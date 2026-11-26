@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-handoff-save-to-project"
+description = "Enables the handoff_save_to_project command without any pre-configured scope."
+commands.allow = ["handoff_save_to_project"]
+
+[[permission]]
+identifier = "deny-handoff-save-to-project"
+description = "Denies the handoff_save_to_project command without any pre-configured scope."
+commands.deny = ["handoff_save_to_project"]

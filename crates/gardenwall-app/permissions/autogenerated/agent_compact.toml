@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-compact"
+description = "Enables the agent_compact command without any pre-configured scope."
+commands.allow = ["agent_compact"]
+
+[[permission]]
+identifier = "deny-agent-compact"
+description = "Denies the agent_compact command without any pre-configured scope."
+commands.deny = ["agent_compact"]

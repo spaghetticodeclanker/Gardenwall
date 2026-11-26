@@ -1,0 +1,27 @@
+[package]
+name = "gardenwall-parse"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Untrusted, sandboxed worker that turns fetched web pages and documents (PDF, DOCX) into plain text (ADR-012 fetch/parse worker). No network, no files."
+publish = false
+
+[dependencies]
+# Both are already in Gardenwall's dependency tree (runtime extraction).
+flate2 = "1.1.11"
+zip = { version = "9.5.1", default-features = false, features = ["deflate"] }
+
+# Windows' built-in PDF renderer and OCR and
+# voices (release plan feature 8); the
+# `windows` crate is already in the dependency tree through Tauri.
+[target.'cfg(windows)'.dependencies.windows]
+version = "0.62.2"
+features = ["Foundation", "Foundation_Collections", "Data_Pdf", "Graphics_Imaging", "Media_Core", "Media_Ocr", "Media_SpeechSynthesis", "Storage_Streams"]
+
+[dev-dependencies]
+gardenwall-fuzzkit = { path = "../gardenwall-fuzzkit" }
+
+[[bin]]
+name = "gardenwall-parse"
+path = "src/main.rs"

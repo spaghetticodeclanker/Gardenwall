@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-chat-visits"
+description = "Enables the chat_visits command without any pre-configured scope."
+commands.allow = ["chat_visits"]
+
+[[permission]]
+identifier = "deny-chat-visits"
+description = "Denies the chat_visits command without any pre-configured scope."
+commands.deny = ["chat_visits"]

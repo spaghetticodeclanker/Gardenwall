@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-undo"
+description = "Enables the agent_undo command without any pre-configured scope."
+commands.allow = ["agent_undo"]
+
+[[permission]]
+identifier = "deny-agent-undo"
+description = "Denies the agent_undo command without any pre-configured scope."
+commands.deny = ["agent_undo"]

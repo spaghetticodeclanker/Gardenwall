@@ -1,0 +1,61 @@
+[package]
+name = "gardenwall-app"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Gardenwall desktop application (Tauri 2)."
+publish = false
+
+[build-dependencies]
+tauri-build = { version = "2.7.4", features = [] }
+
+[dependencies]
+gardenwall-inference = { path = "../gardenwall-inference" }
+gardenwall-models = { path = "../gardenwall-models" }
+gardenwall-runtime = { path = "../gardenwall-runtime" }
+gardenwall-store = { path = "../gardenwall-store" }
+gardenwall-keychain = { path = "../gardenwall-keychain" }
+zeroize = "1.9.1"
+gardenwall-agent = { path = "../gardenwall-agent" }
+gardenwall-gpu = { path = "../gardenwall-gpu" }
+gardenwall-egress = { path = "../gardenwall-egress" }
+gardenwall-rag = { path = "../gardenwall-rag" }
+gardenwall-mcp = { path = "../gardenwall-mcp" }
+url = "2.5.8"
+regex = "1.13.1"
+base64 = "0.23.1"
+getrandom = "0.4.3"
+gardenwall-policy = { path = "../gardenwall-policy" }
+# Read aloud: text checks and limits shared with the sandboxed worker.
+gardenwall-parse = { path = "../gardenwall-parse" }
+gardenwall-fs = { path = "../gardenwall-fs" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha2 = "0.10"
+tauri = { version = "2.12.5", features = [] }
+tauri-plugin-dialog = "2.8.4"
+tokio = { version = "1.54.1", features = ["sync", "rt", "rt-multi-thread", "time", "macros"] }
+zip = { version = "9.5.1", default-features = false }
+tauri-plugin-notification = "2.8.1"
+# ADR-017 §3.3: only verifies and installs. Its own check and download
+# (system proxy, any redirect) are never called; the core fetches.
+tauri-plugin-updater = { version = "2.14.1", default-features = false }
+
+[dev-dependencies]
+# Mock app for the updater signature tests.
+tauri = { version = "2.12.5", features = ["test"] }
+gardenwall-fuzzkit = { path = "../gardenwall-fuzzkit" }
+tempfile = "3.27.0"
+
+[target.'cfg(any(windows, target_os = "linux"))'.dependencies]
+gardenwall-sandbox = { path = "../gardenwall-sandbox" }
+
+# A native message box when the WebView2 runtime is missing (the window
+# can't open without it). Same version and features the dialog plugin
+# already builds, so no new crate.
+[target.'cfg(windows)'.dependencies]
+rfd = { version = "0.17", default-features = false, features = ["common-controls-v6"] }
+# Voice input (release plan feature 7): the core records the microphone
+# through WASAPI; no extra C libraries on Windows.
+cpal = "0.18.2"

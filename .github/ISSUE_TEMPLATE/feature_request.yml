@@ -1,0 +1,27 @@
+name: Feature request
+description: An idea for something Gardenwall could do.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas are welcome. Gardenwall's first rule is that the model is untrusted, so a feature that gives a model more access may be built differently from how you'd expect, or not at all. Saying why you need it helps.
+
+        Check [Coming later](https://github.com/spaghetticodeclanker/gardenwall#coming-later) in the README first: it may already be planned.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you're trying to do
+      description: The task or problem, in your own words.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you'd like Gardenwall to handle it.
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Access it would need
+      description: Would it need the network, your files, or new permissions for the model? Leave blank if you're not sure.

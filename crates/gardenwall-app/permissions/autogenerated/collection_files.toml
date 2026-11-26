@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-collection-files"
+description = "Enables the collection_files command without any pre-configured scope."
+commands.allow = ["collection_files"]
+
+[[permission]]
+identifier = "deny-collection-files"
+description = "Denies the collection_files command without any pre-configured scope."
+commands.deny = ["collection_files"]

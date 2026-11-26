@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-restart-sandbox"
+description = "Enables the agent_restart_sandbox command without any pre-configured scope."
+commands.allow = ["agent_restart_sandbox"]
+
+[[permission]]
+identifier = "deny-agent-restart-sandbox"
+description = "Denies the agent_restart_sandbox command without any pre-configured scope."
+commands.deny = ["agent_restart_sandbox"]

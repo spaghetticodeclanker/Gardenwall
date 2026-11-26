@@ -1,0 +1,4 @@
+load_tensors:        CUDA0 model buffer size = 19634.06 MiB
+load_tensors: offloaded 65/65 layers to GPU
+llama_params_fit_impl: 21 overflowing layers
+main: server is listening on http://127.0.0.1:8080 - starting the main loop

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-find-projectors"
+description = "Enables the find_projectors command without any pre-configured scope."
+commands.allow = ["find_projectors"]
+
+[[permission]]
+identifier = "deny-find-projectors"
+description = "Denies the find_projectors command without any pre-configured scope."
+commands.deny = ["find_projectors"]

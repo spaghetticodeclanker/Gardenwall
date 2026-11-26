@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-agent-save-instructions"
+description = "Enables the agent_save_instructions command without any pre-configured scope."
+commands.allow = ["agent_save_instructions"]
+
+[[permission]]
+identifier = "deny-agent-save-instructions"
+description = "Denies the agent_save_instructions command without any pre-configured scope."
+commands.deny = ["agent_save_instructions"]

@@ -1,0 +1,81 @@
+/* First-run setup (phase 3): full screen over the app. Tokens only. */
+.gw-setup {
+  position: fixed; inset: 0; z-index: 150; display: flex; flex-direction: column;
+  background: var(--bg); color: var(--text); isolation: isolate; animation: gw-setup-in var(--dur-panel) var(--ease-out);
+}
+@keyframes gw-setup-in { from { opacity: 0; } }
+.gw-setup-art { position: absolute; right: 0; bottom: 56px; width: min(48vw, 900px); height: min(80vh, 900px); z-index: -1; opacity: 0.9; pointer-events: none;
+  mask-image: linear-gradient(to left, black 50%, transparent); }
+
+.gw-setup-head { display: flex; align-items: center; gap: var(--sp-6); height: 56px; padding: 0 var(--sp-4) 0 var(--sp-6); border-bottom: 1px solid var(--border); }
+.gw-setup-brand { display: inline-flex; align-items: center; gap: var(--sp-2); font-weight: 600; letter-spacing: -0.01em; }
+.gw-setup-brand .gw-mark { color: var(--accent); }
+.gw-setup-steps { display: flex; gap: var(--sp-5); list-style: none; margin: 0 auto 0 0; padding: 0; font-size: var(--fs-sm); color: var(--muted); }
+.gw-setup-steps li { display: inline-flex; align-items: center; gap: var(--sp-2); white-space: nowrap; }
+.gw-setup-steps li.now { color: var(--text); }
+.gw-setup-dot { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border-strong); font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.gw-setup-steps li.now .gw-setup-dot { border-color: var(--accent); color: var(--accent); }
+.gw-setup-steps li.done .gw-setup-dot { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+
+.gw-setup-body { flex: 1; overflow-y: auto; padding: var(--sp-8) var(--sp-6); }
+.gw-setup-step { max-width: 620px; margin: 0 auto; animation: gw-step-in var(--dur-panel) var(--ease-out); }
+.gw-setup-step.wide { max-width: 860px; }
+@keyframes gw-step-in { from { opacity: 0; transform: translateY(6px); } }
+.gw-setup-step h1 { font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 600; margin: 0 0 var(--sp-3); outline: none; }
+.gw-setup-step h2 { font-size: var(--fs-md); font-weight: 600; margin: var(--sp-6) 0 var(--sp-2); }
+.gw-setup-lead { font-size: var(--fs-md); color: var(--text-secondary); line-height: 1.5; margin: 0 0 var(--sp-6); max-width: 56ch; }
+
+.gw-setup-points { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+.gw-setup-points li { display: grid; grid-template-columns: 36px 1fr; gap: var(--sp-3); align-items: start; }
+.gw-setup-points svg { width: 20px; height: 20px; padding: 8px; box-sizing: content-box; border-radius: var(--radius); background: var(--accent-soft); color: var(--accent); }
+.gw-setup-points b { display: block; font-weight: 600; margin-bottom: 2px; }
+.gw-setup-points span { color: var(--muted); line-height: 1.5; }
+
+.gw-setup-runtime { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-4); background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-card); }
+.gw-setup-runtime > svg { color: var(--muted); flex: none; }
+.gw-setup-runtime-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--sp-1); }
+.gw-setup-runtime-text .muted { font-size: var(--fs-sm); overflow-wrap: anywhere; }
+
+.gw-setup-models { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-4); }
+.gw-setup-model { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; }
+.gw-setup-model.on { border-color: var(--accent); background: color-mix(in srgb, var(--accent-soft) 60%, var(--panel)); }
+.gw-setup-model input { accent-color: var(--accent); }
+.gw-setup-model-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gw-setup-launch { display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-4); background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-card); }
+.gw-setup-launch > div { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.gw-setup-launch .muted { font-size: var(--fs-sm); }
+
+.gw-setup-summary { list-style: none; margin: 0 0 var(--sp-4); padding: 0; display: grid; gap: var(--sp-2); }
+.gw-setup-summary li { display: flex; align-items: center; gap: var(--sp-2); }
+.gw-setup-summary svg { width: 16px; height: 16px; color: var(--ok); }
+.gw-setup-summary svg.no { color: var(--muted); }
+
+.gw-setup-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-3) var(--sp-6); border-top: 1px solid var(--border); background: var(--chrome); }
+.gw-setup-foot-right { display: flex; gap: var(--sp-2); }
+
+@media (max-width: 900px) {
+  .gw-setup-steps li:not(.now) { font-size: 0; gap: 0; }
+  .gw-setup-art { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gw-setup, .gw-setup-step { animation: none; }
+}
+
+/* The welcome fills the screen: larger type that grows with the window,
+   centred in the space between the header and footer. */
+.gw-setup-body:has(.gw-setup-welcome) { display: flex; align-items: center; }
+.gw-setup-step.gw-setup-welcome { max-width: min(1040px, 100%); width: 100%; }
+.gw-setup-welcome h1 { font-size: clamp(34px, 3.4vw, 60px); margin-bottom: var(--sp-4); }
+.gw-setup-welcome .gw-setup-lead { font-size: clamp(17px, 1.35vw, 23px); max-width: 52ch; margin-bottom: clamp(28px, 4vh, 56px); }
+.gw-setup-welcome .gw-setup-points { grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: clamp(20px, 3vh, 40px) clamp(24px, 3vw, 56px); }
+.gw-setup-welcome .gw-setup-points li { grid-template-columns: auto 1fr; gap: var(--sp-4); }
+.gw-setup-welcome .gw-setup-points svg { width: clamp(20px, 1.5vw, 26px); height: clamp(20px, 1.5vw, 26px); padding: clamp(9px, 0.8vw, 13px); border-radius: var(--radius-card); }
+.gw-setup-welcome .gw-setup-points b { font-size: clamp(15px, 1.1vw, 19px); margin-bottom: var(--sp-1); }
+.gw-setup-welcome .gw-setup-points span { font-size: clamp(14px, 0.95vw, 16px); color: var(--text-secondary); }
+.gw-setup-steps { font-size: var(--fs-base); }
+@media (max-height: 640px) { .gw-setup-body:has(.gw-setup-welcome) { align-items: flex-start; } }
+/* The tree stays in the empty space right of the steps, never behind text;
+   on portrait screens it grows in the free space below them. */
+.gw-setup-art { width: clamp(0px, calc((100vw - 1040px) / 2 + 40px), 900px); }
+@media (max-width: 1360px) and (orientation: landscape) { .gw-setup-art { display: none; } }
+@media (orientation: portrait) { .gw-setup-art { display: block; width: min(64vw, 640px); height: 26vh; } }
