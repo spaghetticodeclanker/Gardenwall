@@ -185,6 +185,7 @@ pub fn delete_project(state: State<'_, AppState>, id: String) -> CmdResult<()> {
 mod tests {
     use super::*;
 
+    #[cfg(windows)] // Windows paths: on other systems `C:\...` isn't a path
     #[test]
     fn projects_are_named_after_their_first_folder() {
         assert_eq!(default_name(&[r"C:\work\game".into()]), "game");

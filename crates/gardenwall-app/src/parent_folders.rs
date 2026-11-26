@@ -480,6 +480,7 @@ pub fn warm_in_background(app: &AppHandle) {
 mod tests {
     use super::*;
 
+    #[cfg(windows)] // Windows paths: on other systems `C:\...` isn't a path
     #[test]
     fn the_folders_above_are_listed_once_from_the_root() {
         let a = ancestors(&[
@@ -499,6 +500,7 @@ mod tests {
         assert!(ancestors(&[PathBuf::from(r"C:\app")]).len() == 1);
     }
 
+    #[cfg(windows)] // Windows paths: on other systems `C:\...` isn't a path
     #[test]
     fn each_folder_says_what_becomes_visible() {
         assert!(what(Path::new(r"C:\")).contains("top of this drive"));
@@ -539,6 +541,7 @@ mod tests {
         assert!(pasted(sid, &[r"C:\@SID@"], false).contains(r"'C:\@SID@'"));
     }
 
+    #[cfg(windows)] // Windows paths: on other systems `C:\...` isn't a path
     #[test]
     fn projects_inside_credential_folders_are_refused() {
         let p = plan(&[PathBuf::from(r"C:\Users\you\.config\tool\proj")]);
