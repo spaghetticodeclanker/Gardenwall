@@ -59,6 +59,9 @@ jobs:
           "$PY" scripts/licence-notices.py --check
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Sandbox diagnostics (prints only; temporary)
+        if: runner.os == 'Windows'
+        run: cargo test -p gardenwall-agent --test sandbox_shell --locked runner_diagnostics -- --ignored --nocapture
       - name: Test
         run: cargo test --workspace --locked
       - name: No-hub build contains no network code (ADR-013 §2.7)

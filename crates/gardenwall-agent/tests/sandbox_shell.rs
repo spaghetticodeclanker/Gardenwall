@@ -920,3 +920,141 @@ fn system_locations_are_named_so_nothing_lands_in_the_project() {
     assert!(!out.output.contains("%SystemDrive%"), "{}", out.output);
     assert!(!f.work.join("%SystemDrive%").exists());
 }
+
+/// Prints what differs on a machine where the shell tests fail (GitHub's
+/// hosted Windows runners): Windows PowerShell 5.1's modules, programs that
+/// get "Access is denied", Node's realpath, and folder permissions before,
+/// during and after a session. Never fails; run on request:
+/// `cargo test -p gardenwall-agent --test sandbox_shell runner_diagnostics -- --ignored --nocapture`
+#[cfg(windows)]
+#[test]
+#[ignore]
+fn runner_diagnostics() {
+    fn section(name: &str) {
+        println!("\n===== {name} =====");
+    }
+    fn host(program: &str, args: &[&str]) -> String {
+        match std::process::Command::new(program).args(args).output() {
+            Ok(o) => format!(
+                "{}{}(exit {:?})",
+                String::from_utf8_lossy(&o.stdout),
+                String::from_utf8_lossy(&o.stderr),
+                o.status.code()
+            ),
+            Err(e) => format!("could not start {program}: {e}"),
+        }
+    }
+    let acl = |p: &std::path::Path| host("icacls", &[&p.display().to_string()]);
+    let tmp = tempfile::tempdir().unwrap();
+    let work = tmp.path().join("work");
+    let tools = tmp.path().join("tools");
+    std::fs::create_dir_all(&work).unwrap();
+    std::fs::create_dir_all(&tools).unwrap();
+    let system32 = PathBuf::from(std::env::var_os("SystemRoot").unwrap()).join("System32");
+    std::fs::copy(system32.join("whoami.exe"), tools.join("gwprog.exe")).unwrap();
+    std::fs::copy(system32.join("hostname.exe"), tools.join("gwhost.exe")).unwrap();
+    std::fs::write(work.join("before.txt"), "x").unwrap();
+    std::fs::write(work.join(".env"), "KEY=1").unwrap();
+
+    section("host");
+    println!("TEMP = {:?}", std::env::var_os("TEMP"));
+    println!("{}", host("cmd", &["/d", "/c", "ver"]));
+    println!(
+        "{}",
+        host(
+            "powershell.exe",
+            &[
+                "-NoProfile",
+                "-Command",
+                "$PSVersionTable.PSVersion.ToString(); $env:PSModulePath; \
+                 [Reflection.Assembly]::Load('Microsoft.PowerShell.Commands.Utility, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35').Location; \
+                 (Get-Module -ListAvailable Microsoft.PowerShell.Utility | Select-Object -First 1).Path"
+            ]
+        )
+    );
+
+    section("permissions before the session");
+    let temp_dir = PathBuf::from(std::env::var_os("TEMP").unwrap());
+    for p in [
+        temp_dir.as_path(),
+        tmp.path(),
+        &work,
+        &work.join("before.txt"),
+        &work.join(".env"),
+    ] {
+        println!("{}", acl(p));
+    }
+
+    let ps = shell_with_tools(tmp.path(), &tools, ShellKind::WindowsPowerShell);
+    let run =
+        |shell: &SandboxShell, c: &str| match block(shell.run(c, Some(Duration::from_secs(60)))) {
+            Ok(o) => format!("{}(exit {:?})", o.output, o.exit_code),
+            Err(e) => format!("error: {e}"),
+        };
+    section("permissions during the session");
+    std::fs::write(work.join("during.txt"), "x").unwrap();
+    for p in [&work, &work.join("before.txt"), &work.join("during.txt")] {
+        println!("{}", acl(p));
+    }
+
+    section("Windows PowerShell 5.1 in the sandbox");
+    for c in [
+        "[Console]::Out.WriteLine('version ' + $PSVersionTable.PSVersion + ' mode ' + $ExecutionContext.SessionState.LanguageMode)",
+        "[Console]::Out.WriteLine('PSModulePath ' + $env:PSModulePath)",
+        "[Console]::Out.WriteLine('psd1 exists ' + [IO.File]::Exists(\"$env:windir\\System32\\WindowsPowerShell\\v1.0\\Modules\\Microsoft.PowerShell.Utility\\Microsoft.PowerShell.Utility.psd1\"))",
+        "try { [Console]::Out.WriteLine('modules dir: ' + ([IO.Directory]::GetDirectories(\"$env:windir\\System32\\WindowsPowerShell\\v1.0\\Modules\") -join ', ')) } catch { [Console]::Out.WriteLine('list modules: ' + $_.Exception.ToString()) }",
+        "try { [Console]::Out.WriteLine('assembly ' + [Reflection.Assembly]::Load('Microsoft.PowerShell.Commands.Utility, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35').Location) } catch { [Console]::Out.WriteLine('assembly load: ' + $_.Exception.ToString()) }",
+        "try { Import-Module Microsoft.PowerShell.Utility -ErrorAction Stop; [Console]::Out.WriteLine('import ok') } catch { [Console]::Out.WriteLine('import: ' + $_.Exception.ToString()) }",
+        "try { Import-Module \"$env:windir\\System32\\WindowsPowerShell\\v1.0\\Modules\\Microsoft.PowerShell.Utility\\Microsoft.PowerShell.Utility.psd1\" -ErrorAction Stop; [Console]::Out.WriteLine('import by path ok') } catch { [Console]::Out.WriteLine('import by path: ' + $_.Exception.ToString()) }",
+        "foreach ($m in Get-Module -ListAvailable) { [Console]::Out.WriteLine('available ' + $m.Name + ' ' + $m.Path) }",
+    ] {
+        println!("> {c}\n{}", run(&ps, c));
+    }
+    drop(ps);
+
+    section("cmd in the sandbox");
+    let cmd = shell_with_tools(tmp.path(), &tools, ShellKind::Cmd);
+    for c in [
+        "whoami & echo rc=%errorlevel%",
+        "gwprog & echo rc=%errorlevel%",
+        "gwhost & echo rc=%errorlevel%",
+        "for /f \"delims=\" %F in ('gwprog') do @echo got %F",
+        "for /f \"delims=\" %F in ('gwhost') do @echo got %F",
+        "for /f \"delims=\" %F in ('echo plain') do @echo got %F",
+    ] {
+        println!("> {c}\n{}", run(&cmd, c));
+    }
+
+    let node = PathBuf::from(r"C:\Program Files\nodejs");
+    if node.join("node.exe").is_file() && gardenwall_sandbox::sandbox_can_use(&node) {
+        section("Node.js in the sandbox");
+        std::fs::write(work.join("lib.cjs"), "module.exports = 1;").unwrap();
+        let js = shell_with_tools(tmp.path(), &node, ShellKind::Cmd);
+        for c in [
+            "node --version",
+            "node -e \"require('fs').realpath('lib.cjs', (e, p) => console.log(e ? 'realpath: ' + e.code + ' ' + e.message : 'realpath ok ' + p))\"",
+            "node -e \"require('fs').realpath.native('lib.cjs', (e, p) => console.log(e ? 'native: ' + e.code + ' ' + e.message : 'native ok ' + p))\"",
+            "node -e \"try { console.log('sync ok ' + require('fs').realpathSync('lib.cjs')) } catch (e) { console.log('sync: ' + e.code + ' ' + e.message) }\"",
+            "node -e \"require('fs').realpath('.', (e, p) => console.log(e ? 'cwd: ' + e.code + ' ' + e.message : 'cwd ok ' + p))\"",
+        ] {
+            println!("> {c}\n{}", run(&js, c));
+        }
+        drop(js);
+    } else {
+        println!("\n(no Node.js the sandbox can use at {})", node.display());
+    }
+    drop(cmd);
+
+    section("permissions after the session");
+    std::fs::write(work.join("after.txt"), "x").unwrap();
+    std::fs::remove_file(work.join(".env")).unwrap();
+    std::fs::write(work.join(".env"), "KEY=2").unwrap();
+    for p in [
+        &work,
+        &work.join("before.txt"),
+        &work.join("after.txt"),
+        &work.join(".env"),
+    ] {
+        println!("{}", acl(p));
+    }
+}
