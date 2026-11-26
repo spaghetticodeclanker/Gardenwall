@@ -34,7 +34,10 @@ async fn ending_one_session_leaves_the_other_working() {
     std::fs::write(root.join(".git").join("config"), "[core]\n").unwrap();
     let granted = std::fs::canonicalize(&root).unwrap();
     let config = granted.join(".git").join("config");
-    assert!(inherits(&config));
+    // Normally true; false where the folder's permissions are in the old,
+    // pre-auto-inheritance form (GitHub's runners). Either way it must be
+    // the same once the sessions end.
+    let inherited = inherits(&config);
     let shell = |n: &str| {
         SandboxShell::new(
             std::slice::from_ref(&granted),
@@ -60,8 +63,9 @@ async fn ending_one_session_leaves_the_other_working() {
 
     // When the last session ends, the original permissions are back.
     drop(two);
-    assert!(
+    assert_eq!(
         inherits(&config),
-        "the file inherits its folder's permissions again"
+        inherited,
+        "the file's permissions are as they were"
     );
 }

@@ -16,28 +16,39 @@ struct Fx {
 /// The helper alone in its own folder, as the app stages it.
 fn fx() -> Fx {
     let tmp = tempfile::tempdir().unwrap();
-    let dir = tmp.path().join("js");
-    std::fs::create_dir_all(&dir).unwrap();
-    // Cross-built tests run from another system (WSL), where the path from
-    // the build doesn't exist: the helper is then beside the tests' folder.
-    let built = std::path::PathBuf::from(env!("CARGO_BIN_EXE_gardenwall-js"));
-    let source = if built.is_file() {
-        built
-    } else {
-        let exe = std::env::current_exe().unwrap();
-        exe.parent()
-            .unwrap()
-            .parent()
-            .unwrap()
-            .join("gardenwall-js")
-    };
-    let helper = dir.join(source.file_name().unwrap());
-    std::fs::copy(source, &helper).unwrap();
     let journal = tmp.path().join("journal");
     std::fs::create_dir_all(&journal).unwrap();
-    let host =
-        SandboxScriptHost::new(helper, Some(journal)).with_script_time(Duration::from_secs(3));
+    let host = SandboxScriptHost::new(staged_helper().to_path_buf(), Some(journal))
+        .with_script_time(Duration::from_secs(3));
     Fx { _tmp: tmp, host }
+}
+
+/// The helper is copied once, before any test starts a program: on Linux a
+/// copy made while another test thread was starting its helper could not
+/// be run ("executable file busy": the starting process briefly held the
+/// copy's open handle). The folder is left in the temp folder.
+fn staged_helper() -> &'static std::path::Path {
+    static HELPER: std::sync::OnceLock<std::path::PathBuf> = std::sync::OnceLock::new();
+    HELPER.get_or_init(|| {
+        let dir = tempfile::tempdir().unwrap().keep().join("js");
+        std::fs::create_dir_all(&dir).unwrap();
+        // Cross-built tests run from another system (WSL), where the path from
+        // the build doesn't exist: the helper is then beside the tests' folder.
+        let built = std::path::PathBuf::from(env!("CARGO_BIN_EXE_gardenwall-js"));
+        let source = if built.is_file() {
+            built
+        } else {
+            let exe = std::env::current_exe().unwrap();
+            exe.parent()
+                .unwrap()
+                .parent()
+                .unwrap()
+                .join("gardenwall-js")
+        };
+        let helper = dir.join(source.file_name().unwrap());
+        std::fs::copy(source, &helper).unwrap();
+        helper
+    })
 }
 
 fn tools() -> Vec<String> {
