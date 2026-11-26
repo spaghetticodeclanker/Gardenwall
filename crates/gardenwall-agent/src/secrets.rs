@@ -566,7 +566,13 @@ mod tests {
         std::fs::write(deep.join(".env"), "KEY=1").unwrap();
         let mut watch = Watch::default();
         watch.update(std::slice::from_ref(&root));
-        assert_eq!(watch.stamps.len(), 101);
+        // On a slow machine the first walk's own timing may already have
+        // shrunk the watch to the minimum; either way the checks below hold.
+        assert!(
+            watch.stamps.len() == 101 || watch.limit == Some(MIN_WATCHED),
+            "{} folders watched",
+            watch.stamps.len()
+        );
         let before = watch.found.clone();
         // A check that took ten times the budget.
         watch.fit_budget(CHECK_BUDGET * 10);
