@@ -41,7 +41,7 @@ jobs:
           rustup default "$RUST_TOOLCHAIN"
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24"
+          node-version: "24.13.0" # the release builds' Node.js (npm 11); npm 12 rejects the lock file
       - name: Rust crates with newer compatible versions
         run: |
           {
