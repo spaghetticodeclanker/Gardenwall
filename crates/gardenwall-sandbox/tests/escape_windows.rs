@@ -569,7 +569,10 @@ fn private_drive_letters_work_and_grant_nothing() {
                     OsStr::new("-NoProfile"),
                     OsStr::new("-NonInteractive"),
                     OsStr::new("-Command"),
-                    OsStr::new(r"$null = New-PSDrive -Name W -PSProvider FileSystem -Root W:\ -Scope Global; Set-Location W:\; (Get-Location).Path; (Get-ChildItem -Name) -join ','; Set-Content new.txt hi; Get-Content new.txt"),
+                    // As the agent's shell does: 5.1 adds Program Files'
+                    // modules back to the path, and on GitHub's runners
+                    // one there stops it finding its own commands.
+                    OsStr::new(r"$env:PSModulePath = [Environment]::SystemDirectory + '\WindowsPowerShell\v1.0\Modules'; $null = New-PSDrive -Name W -PSProvider FileSystem -Root W:\ -Scope Global; Set-Location W:\; (Get-Location).Path; (Get-ChildItem -Name) -join ','; Set-Content new.txt hi; Get-Content new.txt"),
                 ],
             )
             .unwrap();
@@ -609,9 +612,13 @@ fn a_parent_folder_hold_shows_names_only() {
     use gardenwall_sandbox::ParentListHold;
     let fx = Fixture::new("ParentList");
     std::fs::write(fx.root.join("top.txt"), b"top").unwrap();
+    // Without the "inherited" mark: a folder in the old, pre-auto-inheritance
+    // form (GitHub's runners) is rewritten in the current form, marked
+    // inherited, by any change; the entries and rights stay the same.
     let icacls = |p: &Path| {
         String::from_utf8_lossy(&Command::new("icacls").arg(p).output().unwrap().stdout)
             .replace(&*p.to_string_lossy(), "")
+            .replace("(I)", "")
     };
     let before_root = icacls(&fx.root);
     let before_outside = icacls(&fx.outside);
