@@ -567,9 +567,11 @@ mod tests {
         let mut watch = Watch::default();
         watch.update(std::slice::from_ref(&root));
         // On a slow machine the first walk's own timing may already have
-        // shrunk the watch to the minimum; either way the checks below hold.
+        // shrunk the watch (to 64-100 folders); either way the checks below
+        // hold, since a check ten times over the budget leaves the minimum.
         assert!(
-            watch.stamps.len() == 101 || watch.limit == Some(MIN_WATCHED),
+            watch.stamps.len() == 101
+                || (watch.limit.is_some() && watch.stamps.len() >= MIN_WATCHED),
             "{} folders watched",
             watch.stamps.len()
         );
