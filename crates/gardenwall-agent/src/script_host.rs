@@ -95,12 +95,25 @@ impl SandboxScriptHost {
         if let Some(root) = std::env::var_os("SystemRoot") {
             env.push(("SystemRoot".into(), root));
         }
+        #[cfg_attr(not(target_os = "linux"), allow(unused_mut))]
+        let mut grants = vec![PathGrant {
+            path: dir.clone(),
+            access: Access::ReadExecute,
+        }];
+        // On Linux a dynamically linked helper needs the loader and the C
+        // library to start: read and run only, as the agent's shell has.
+        #[cfg(target_os = "linux")]
+        for sys in ["/lib", "/lib64", "/usr/lib", "/usr/lib64"] {
+            if std::path::Path::new(sys).exists() {
+                grants.push(PathGrant {
+                    path: sys.into(),
+                    access: Access::ReadExecute,
+                });
+            }
+        }
         Ok(SandboxPolicy {
             profile: "Gardenwall.Script".into(),
-            grants: vec![PathGrant {
-                path: dir.clone(),
-                access: Access::ReadExecute,
-            }],
+            grants,
             network: Network::Denied,
             limits: Limits {
                 memory_bytes: Some(MEMORY_BYTES),

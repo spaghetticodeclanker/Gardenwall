@@ -41,10 +41,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev
-          # The Linux sandbox starts helpers in their own user and network
-          # namespaces; Ubuntu 23.10+ restricts unprivileged user namespaces
-          # through AppArmor, so the sandbox would (correctly) refuse to start.
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true # absent = no restriction
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24.13.0" # the release builds' Node.js (npm 11); npm 12 rejects the lock file
