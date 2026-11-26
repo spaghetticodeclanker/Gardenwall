@@ -816,6 +816,13 @@ async fn a_secret_committed_in_a_real_repository_is_flagged() {
     use gardenwall_agent::agent::SecurityFlag;
     use gardenwall_agent::sandbox_shell::{SandboxShell, ShellKind};
 
+    // GitHub's hosted Windows runners run tests in a service session without
+    // a console: Git in the sandbox opens /dev/null for its missing standard
+    // handles and is refused, so these tests can't show anything there.
+    if std::env::var_os("GITHUB_ACTIONS").is_some() {
+        eprintln!("skipped: hosted CI runner (no console session)");
+        return;
+    }
     let git_home = PathBuf::from(r"C:\Program Files\Git");
     if !git_home.join("cmd").join("git.exe").is_file() {
         eprintln!("skipped: Git for Windows is not installed in Program Files");
@@ -932,6 +939,13 @@ async fn a_secret_is_stopped_before_it_is_committed() {
 
     use gardenwall_agent::sandbox_shell::{SandboxShell, ShellKind};
 
+    // GitHub's hosted Windows runners run tests in a service session without
+    // a console: Git in the sandbox opens /dev/null for its missing standard
+    // handles and is refused, so these tests can't show anything there.
+    if std::env::var_os("GITHUB_ACTIONS").is_some() {
+        eprintln!("skipped: hosted CI runner (no console session)");
+        return;
+    }
     let git_home = PathBuf::from(r"C:\Program Files\Git");
     if !git_home.join("cmd").join("git.exe").is_file() {
         eprintln!("skipped: Git for Windows is not installed in Program Files");
