@@ -1034,6 +1034,8 @@ fn runner_diagnostics() {
         "cmd /d /c \"chcp & echo plain-chcp\"",
         "cmd /d /c \"chcp 65001 & echo loud-chcp\"",
         "cmd /d /c \"chcp 437>nul 2>&1 & echo chcp-437\"",
+        "cmd /d /c \"echo x>nul & echo after-nul\"",
+        "try { [IO.File]::OpenWrite('\\\\.\\NUL').Close(); 'NUL opens' } catch { 'NUL: ' + $_.Exception.Message }",
     ] {
         println!("> {c}\n{}", run(&ps7, c));
     }

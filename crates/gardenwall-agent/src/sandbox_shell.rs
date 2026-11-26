@@ -610,12 +610,15 @@ impl SandboxShell {
             // written; `chcp 65001` gives UTF-8 output where Windows allows
             // it (it is refused in non-interactive service sessions, so its
             // errors are silenced too and output keeps the default code page).
+            // Its output goes to a file in the sandbox's temp folder, not
+            // `nul`: where the sandbox can't open the NUL device (GitHub's
+            // runners), `>nul` printed "Access is denied." after every command.
             // cmd stays in the real folder it starts in: programs it runs
             // inherit that working folder, while the private letters exist
             // only for cmd itself (Windows gives child processes the logon
             // session's drives). `dir` needs a path there (`dir W:\`).
             Ok(Launch::Raw(format!(
-                "/d /s /c \"chcp 65001>nul 2>&1 & {command}\""
+                "/d /s /c \"chcp 65001>\"%TEMP%\\gardenwall-chcp.txt\" 2>&1 & {command}\""
             )))
         }
         #[cfg(not(windows))]
@@ -1180,8 +1183,12 @@ fn parse_pwsh_version(output: &str) -> Option<String> {
 /// now cost about what PowerShell's own start does.
 #[cfg(windows)]
 fn powershell_args(command: &str, drives: &[(char, PathBuf)]) -> Vec<OsString> {
+    // Windows PowerShell 5.1 puts `Program Files\WindowsPowerShell\Modules`
+    // back in front of the module path the sandbox sets; a module there
+    // that it can't load (seen on GitHub's runners) stops it finding even
+    // its own commands (`Write-Output`), so the prologue sets it again.
     let mut script = String::from(
-        "$ErrorActionPreference = 'Continue'\n$ProgressPreference = 'SilentlyContinue'\n[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)\n$OutputEncoding = [Console]::OutputEncoding\nif ($PSStyle) { $PSStyle.OutputRendering = 'PlainText' }\n$gwFs = $ExecutionContext.SessionState.Provider.GetOne('FileSystem')\n",
+        "$ErrorActionPreference = 'Continue'\n$ProgressPreference = 'SilentlyContinue'\n[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)\n$OutputEncoding = [Console]::OutputEncoding\nif ($PSStyle) { $PSStyle.OutputRendering = 'PlainText' }\nif ($PSVersionTable.PSVersion.Major -lt 6) { $env:PSModulePath = $env:windir + '\\System32\\WindowsPowerShell\\v1.0\\Modules' }\n$gwFs = $ExecutionContext.SessionState.Provider.GetOne('FileSystem')\n",
     );
     // Each letter is two PowerShell drives. `W:` is rooted at the sandbox's
     // private letter, so PowerShell's own commands work there: moving,
